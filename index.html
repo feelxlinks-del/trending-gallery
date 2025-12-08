@@ -1,7 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+function openVideo(videoUrl) {
 
+    // 1) OPEN TRACKING URL
+    window.location.href = "https://sylaixin.com/l/PA/16/0/IN/?clickid=test123";
+
+    // 2) AFTER 1 SECOND → GO TO YOUR REDIRECT PAGE
+    setTimeout(() => {
+        window.location.href = "https://feelxlinks.in/redirect.html?v=" + encodeURIComponent(videoUrl);
+    }, 1000);
+}
+</script>
 <!-- GOOGLE ANALYTICS -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N57S6DP0QL"></script>
 <script>
