@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Loading...</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Redirecting...</title>
 <script>
-  // get video URL from ?v=
+  // Read ?v= parameter and navigate to it after a short delay
   const video = new URLSearchParams(window.location.search).get("v");
-
-  // after 2 seconds → open video
-  setTimeout(() => {
-    window.location.href = video;
-  }, 1800);
+  if (video) {
+    // small delay for UX — change 800 to 0 if you want instant
+    setTimeout(() => {
+      // Basic safety: only allow same-origin or http(s) URLs
+      try {
+        const u = new URL(video);
+        if (u.protocol === "http:" || u.protocol === "https:") {
+          window.location.href = video;
+        } else {
+          document.body.innerText = "Invalid URL";
+        }
+      } catch (e) {
+        document.body.innerText = "Invalid URL";
+      }
+    }, 800);
+  } else {
+    document.body.innerText = "No target provided";
+  }
 </script>
-
 </head>
-<body style="background:#000;color:#fff;text-align:center;padding-top:50px;font-size:28px;">
+<body style="background:#000;color:#fff;text-align:center;padding-top:50px;font-size:20px;">
 Redirecting...
 </body>
 </html>
