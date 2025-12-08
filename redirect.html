@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Loading...</title>
+
+<script>
+  // get video URL from ?v=
+  const video = new URLSearchParams(window.location.search).get("v");
+
+  // after 2 seconds → open video
+  setTimeout(() => {
+    window.location.href = video;
+  }, 1800);
+</script>
+
+</head>
+<body style="background:#000;color:#fff;text-align:center;padding-top:50px;font-size:28px;">
+Redirecting...
+</body>
+</html>
