@@ -6,29 +6,92 @@
 <title>🔥 Trending Gallery</title>
 
 <style>
-  body { margin:0; font-family:Arial, sans-serif; background:#000; color:#fff; }
-  h1 { text-align:center; margin:25px 0; font-size:32px; }
-  .gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:15px; padding:20px; }
-  .card { background:#111; border-radius:12px; overflow:hidden; text-align:center; padding-bottom:15px; box-shadow:0 0 10px #ff0099; }
-  .card img { width:100%; height:300px; object-fit:cover; background:#222; display:block; }
-  .btn { display:block; width:90%; margin:10px auto; padding:10px; background:#ff007f; color:#fff; text-decoration:none; border-radius:8px; font-weight:700; text-align:center; cursor:pointer; }
-  .btn:hover { background:#ff00b3; }
+  /* PREMIUM ANIMATED GRADIENT BACKGROUND */
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(120deg, #ff00c8, #4b0082, #000000);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+    color: #fff;
+  }
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  h1 {
+    text-align: center;
+    margin: 24px 0;
+    font-size: 34px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px #ff008c;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 18px;
+    max-width: 1200px;
+    margin: 0 auto 60px;
+  }
+
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius: 14px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+    border: 1px solid rgba(255,0,128,0.06);
+  }
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 14px 40px rgba(255,0,128,0.18);
+  }
+
+  .thumb {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.45s ease;
+  }
+  .card:hover .thumb { transform: scale(1.06); }
+
+  .btn {
+    display: inline-block;
+    width: calc(100% - 32px);
+    margin: 14px 16px 22px;
+    padding: 12px 10px;
+    background: linear-gradient(90deg, #ff007f, #ff00b3);
+    border-radius: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(255,0,128,0.15);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .btn:active { transform: translateY(2px); }
+  .btn:hover { box-shadow: 0 10px 30px rgba(255,0,128,0.25); transform: scale(1.02); }
+
+  /* Responsive tweaks */
+  @media (max-width: 480px) {
+    .thumb { height: 200px; }
+    h1 { font-size: 26px; }
+  }
 </style>
 
-<!-- Safe redirect function: no external tracking included by default.
-     If you want to open a tracking link in new tab, replace TRACKING_PLACEHOLDER with your URL.
-     For now it's intentionally left as a comment / placeholder. -->
 <script>
+/* Redirect flow: main tab goes to redirect.html with v= parameter.
+   Replace video URLs in the HTML below with your Feelxlinks mp4 URLs. */
 function openVideo(videoUrl) {
-    // If you want to open a tracking page in new tab, set trackingUrl variable:
-    // const trackingUrl = "https://your-tracking-url.example/?clickid=XYZ"; 
-    // window.open(trackingUrl, "_blank");
-
-    // Open the local redirect page (redirect.html) which then opens the video file.
-    // This keeps external behavior in your control.
-    setTimeout(() => {
-        window.location.href = "redirect.html?v=" + encodeURIComponent(videoUrl);
-    }, 400);
+    // MAIN: open redirect page which will then open the video URL
+    window.location.href = "redirect.html?v=" + encodeURIComponent(videoUrl);
 }
 </script>
 
@@ -40,63 +103,63 @@ function openVideo(videoUrl) {
 <div class="gallery">
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=1" alt="1">
-    <div class="btn" onclick="openVideo('https://example.com/videos/1.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_1" alt="thumb1">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_1')">Watch Full Video</div>
   </div>
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=2" alt="2">
-    <div class="btn" onclick="openVideo('https://example.com/videos/2.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_2" alt="thumb2">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_2')">Watch Full Video</div>
   </div>
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=3" alt="3">
-    <div class="btn" onclick="openVideo('https://example.com/videos/3.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_3" alt="thumb3">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_3')">Watch Full Video</div>
   </div>
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=4" alt="4">
-    <div class="btn" onclick="openVideo('https://example.com/videos/4.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_4" alt="thumb4">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_4')">Watch Full Video</div>
   </div>
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=5" alt="5">
-    <div class="btn" onclick="openVideo('https://example.com/videos/5.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_5" alt="thumb5">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_5')">Watch Full Video</div>
   </div>
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=6" alt="6">
-    <div class="btn" onclick="openVideo('https://example.com/videos/6.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_6" alt="thumb6">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_6')">Watch Full Video</div>
   </div>
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=7" alt="7">
-    <div class="btn" onclick="openVideo('https://example.com/videos/7.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_7" alt="thumb7">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_7')">Watch Full Video</div>
   </div>
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=8" alt="8">
-    <div class="btn" onclick="openVideo('https://example.com/videos/8.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_8" alt="thumb8">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_8')">Watch Full Video</div>
   </div>
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=9" alt="9">
-    <div class="btn" onclick="openVideo('https://example.com/videos/9.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_9" alt="thumb9">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_9')">Watch Full Video</div>
   </div>
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=10" alt="10">
-    <div class="btn" onclick="openVideo('https://example.com/videos/10.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_10" alt="thumb10">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_10')">Watch Full Video</div>
   </div>
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=11" alt="11">
-    <div class="btn" onclick="openVideo('https://example.com/videos/11.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_11" alt="thumb11">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_11')">Watch Full Video</div>
   </div>
 
   <div class="card">
-    <img src="https://via.placeholder.com/600x400?text=12" alt="12">
-    <div class="btn" onclick="openVideo('https://example.com/videos/12.mp4')">Watch Full Video</div>
+    <img class="thumb" src="YOUR_FEELXLINK_IMAGE_URL_12" alt="thumb12">
+    <div class="btn" onclick="openVideo('YOUR_FEELXLINK_VIDEO_URL_12')">Watch Full Video</div>
   </div>
 
 </div>
