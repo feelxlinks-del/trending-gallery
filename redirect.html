@@ -5,12 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Redirecting...</title>
 <script>
-  // Read ?v= parameter and navigate to it after a short delay
+  // Reads ?v= parameter and navigates to it after a short delay
   const video = new URLSearchParams(window.location.search).get("v");
   if (video) {
-    // small delay for UX — change 800 to 0 if you want instant
     setTimeout(() => {
-      // Basic safety: only allow same-origin or http(s) URLs
       try {
         const u = new URL(video);
         if (u.protocol === "http:" || u.protocol === "https:") {
@@ -21,9 +19,9 @@
       } catch (e) {
         document.body.innerText = "Invalid URL";
       }
-    }, 800);
+    }, 700);
   } else {
-    document.body.innerText = "No target provided";
+    document.body.innerText = "No video found";
   }
 </script>
 </head>
