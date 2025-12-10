@@ -1,31 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Redirecting...</title>
-<script>
-  // Reads ?v= parameter and navigates to it after a short delay
-  const video = new URLSearchParams(window.location.search).get("v");
-  if (video) {
-    setTimeout(() => {
-      try {
-        const u = new URL(video);
-        if (u.protocol === "http:" || u.protocol === "https:") {
-          window.location.href = video;
-        } else {
-          document.body.innerText = "Invalid URL";
-        }
-      } catch (e) {
-        document.body.innerText = "Invalid URL";
-      }
-    }, 700);
-  } else {
-    document.body.innerText = "No video found";
-  }
-</script>
+<title>Opening — please wait</title>
+<style>
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;}
+  .box{max-width:420px;padding:28px;border-radius:12px;text-align:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 10px 40px rgba(0,0,0,0.6);border:1px solid rgba(255,0,128,0.06)}
+  .logo{font-size:22px;margin-bottom:10px;color:#ffd;} .msg{opacity:.9;margin-bottom:12px}
+  .spinner{width:46px;height:46px;border-radius:50%;border:5px solid rgba(255,255,255,0.08);border-top-color:#ff007f;animation:spin 1s linear infinite;margin:12px auto}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  a.fakebtn{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:8px;background:#ff007f;color:#fff;text-decoration:none}
+</style>
 </head>
-<body style="background:#000;color:#fff;text-align:center;padding-top:50px;font-size:20px;">
-Redirecting...
+<body>
+  <div class="box">
+    <div class="logo">🔥 Trending Gallery</div>
+    <div class="msg">Preparing video — opening now. If nothing happens, <a id="fbtn" class="fakebtn" href="#">click here</a></div>
+    <div class="spinner"></div>
+    <div style="font-size:12px;opacity:.8;margin-top:8px">You will be redirected shortly...</div>
+  </div>
+
+<script>
+(function(){
+  // read v parameter
+  const params = new URLSearchParams(location.search);
+  let target = params.get('v') || '';
+
+  // OPTIONAL: If you want to convert the raw video URL to a smartlink/ad URL,
+  // add mapping logic here. Example:
+  // if (target.includes('feelxlinks.b-cdn.net/1V.mp4')) {
+  //    target = 'https://your-smartlink.com/track?dest=' + encodeURIComponent(target);
+  // }
+
+  // fallback
+  if (!target) {
+    document.getElementById('fbtn').href = '/';
+    document.querySelector('.msg').innerText = 'No video specified — returning to gallery.';
+    setTimeout(()=> location.replace('/'), 1500);
+    return;
+  }
+
+  // safety: allow only http(s) protocols
+  try {
+    const u = new URL(target);
+    if (!['http:','https:'].includes(u.protocol)) throw 'bad';
+  } catch(e) {
+    document.querySelector('.msg').innerText = 'Invalid URL — returning to gallery.';
+    setTimeout(()=> location.replace('/'), 1500);
+    return;
+  }
+
+  // set manual click fallback
+  document.getElementById('fbtn').href = target;
+
+  // delay a little to allow analytics/tracking, then redirect
+  const DELAY_MS = 700; // adjust if you want more time
+  setTimeout(()=> {
+    // Navigate this tab to the final URL
+    location.href = target;
+  }, DELAY_MS);
+
+})();
+</script>
 </body>
 </html>
