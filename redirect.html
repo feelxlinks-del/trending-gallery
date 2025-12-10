@@ -1,77 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Opening — please wait</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trending Gallery</title>
 <style>
-  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;}
-  .box{max-width:420px;padding:28px;border-radius:12px;text-align:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 10px 40px rgba(0,0,0,0.6);border:1px solid rgba(255,0,128,0.06)}
-  .logo{font-size:22px;margin-bottom:10px;color:#ffd;} .msg{opacity:.9;margin-bottom:12px}
-  .spinner{width:46px;height:46px;border-radius:50%;border:5px solid rgba(255,255,255,0.08);border-top-color:#ff007f;animation:spin 1s linear infinite;margin:12px auto}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  a.fakebtn{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:8px;background:#ff007f;color:#fff;text-decoration:none}
-</style>
-</head>
-<body>
-  <div class="box">
-    <div class="logo">🔥 Trending Gallery</div>
-    <div class="msg">Preparing video — opening now. If nothing happens, <a id="fbtn" class="fakebtn" href="#">click here</a></div>
-    <div class="spinner"></div>
-    <div style="font-size:12px;opacity:.8;margin-top:8px">You will be redirected shortly...</div>
-  </div>
-
-<script>
-(function(){
-  const params = new URLSearchParams(location.search);
-  let target = params.get('v') || '';
-
-  if (!target) {
-    document.getElementById('fbtn').href = '/';
-    document.querySelector('.msg').innerText = 'No video found — returning to gallery.';
-    setTimeout(()=> location.replace('/'), 1500);
-    return;
-  }
-
-  // Validate URL
-  try {
-    const u = new URL(target);
-    if (!['http:','https:'].includes(u.protocol)) throw 'bad';
-  } catch(e) {
-    document.querySelector('.msg').innerText = 'Invalid link.';
-    setTimeout(()=> location.replace('/'), 1500);
-    return;
-  }
-
-  // FALLBACK button
-  document.getElementById('fbtn').href = target;
-
-  // ---- YOUR SETTINGS ----
-  const AFFILIATE = "https://www.effectivegatecpm.com/r3gjuqky?key=1db5f3263e99c630475f63baabf93f34";
-
-  const vipVideos = [
-    "https://feelxlinks.b-cdn.net/1V.mp4",
-    "https://feelxlinks.b-cdn.net/2V.mp4",
-    "https://feelxlinks.b-cdn.net/3V.mp4"
-  ];
-
-  const DELAY_MS = 700;
-
-  // ------------------------
-
-  setTimeout(()=> {
-
-    // ONLY these 3 videos → fire affiliate link
-    if (vipVideos.includes(target)) {
-        window.open(AFFILIATE, "_blank");
+    body {
+        background: #000;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+        flex-direction: column;
+        text-align: center;
     }
 
-    // Then open actual video
-    location.href = target;
+    .box {
+        background: #111;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px #ff0080;
+    }
 
-  }, DELAY_MS);
+    button {
+        background: #ff007f;
+        border: none;
+        padding: 12px 25px;
+        color: white;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
 
-})();
+    .loader {
+        margin-top: 20px;
+        border: 4px solid #333;
+        border-top: 4px solid #ff007f;
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- 🔥 ADSTERRA SOCIAL BAR AD (Your script added perfectly) -->
+<script
+  type="text/javascript"
+  src="//pl28218528.effectivegatecpm.com/77/11/9f/77119f5e4e7d568ca37463d376189f87.js"
+></script>
+
+<div class="box">
+    <h2>🔥 Trending Gallery</h2>
+    <p>Preparing video — opening now. If nothing happens,</p>
+    <button onclick="goNow()">click here</button>
+
+    <div class="loader"></div>
+    <p>You will be redirected shortly...</p>
+</div>
+
+<script>
+// Auto redirect after 3 seconds (IMPORTANT for ad revenue)
+setTimeout(function(){
+    window.location.href = "https://www.effectivegatecpm.com/r3gjuqky?key=1db5f3263e99c630475f63baabf93f34";
+}, 3000);
+
+// Manual click option
+function goNow() {
+    window.location.href = "https://www.effectivegatecpm.com/r3gjuqky?key=1db5f3263e99c630475f63baabf93f34";
+}
 </script>
+
 </body>
 </html>
