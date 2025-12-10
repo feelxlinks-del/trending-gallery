@@ -23,17 +23,9 @@
 
 <script>
 (function(){
-  // read v parameter
   const params = new URLSearchParams(location.search);
   let target = params.get('v') || '';
 
-  // OPTIONAL: If you want to convert the raw video URL to a smartlink/ad URL,
-  // add mapping logic here. Example:
-  // if (target.includes('feelxlinks.b-cdn.net/1V.mp4')) {
-  //    target = 'https://your-smartlink.com/track?dest=' + encodeURIComponent(target);
-  // }
-
-  // fallback
   if (!target) {
     document.getElementById('fbtn').href = '/';
     document.querySelector('.msg').innerText = 'No video specified — returning to gallery.';
@@ -41,7 +33,7 @@
     return;
   }
 
-  // safety: allow only http(s) protocols
+  // Safety — prevent invalid URLs
   try {
     const u = new URL(target);
     if (!['http:','https:'].includes(u.protocol)) throw 'bad';
@@ -51,14 +43,22 @@
     return;
   }
 
-  // set manual click fallback
+  // Fallback click button
   document.getElementById('fbtn').href = target;
 
-  // delay a little to allow analytics/tracking, then redirect
-  const DELAY_MS = 700; // adjust if you want more time
+  const AFFILIATE = "https://www.effectivegatecpm.com/r3gjuqky?key=1db5f3263e99c630475f63baabf93f34";
+
+  // Delay then open both links
+  const DELAY_MS = 700; // Increase to 1500 if needed
+
   setTimeout(()=> {
-    // Navigate this tab to the final URL
+
+    // 1️⃣ OPEN AFFILIATE LINK IN NEW TAB
+    window.open(AFFILIATE, "_blank");
+
+    // 2️⃣ THEN OPEN VIDEO IN SAME TAB
     location.href = target;
+
   }, DELAY_MS);
 
 })();
