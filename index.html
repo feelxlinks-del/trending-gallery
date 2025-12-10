@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>🔥 Trending Gallery</title>
-
 <style>
   /* PREMIUM ANIMATED GRADIENT BACKGROUND */
   body {
@@ -20,85 +19,34 @@
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
-
-  h1 {
-    text-align: center;
-    margin: 24px 0;
-    font-size: 34px;
-    letter-spacing: 1px;
-    text-shadow: 0 0 10px #ff008c;
-  }
-
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
-    padding: 18px;
-    max-width: 1200px;
-    margin: 0 auto 60px;
-  }
-
-  .card {
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-radius: 14px;
-    overflow: hidden;
-    text-align: center;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-    transition: transform 0.28s ease, box-shadow 0.28s ease;
-    border: 1px solid rgba(255,0,128,0.06);
-  }
-  .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 14px 40px rgba(255,0,128,0.18);
-  }
-
-  .thumb {
-    width: 100%;
-    height: 320px;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.45s ease;
-  }
+  h1 { text-align:center; margin:24px 0; font-size:34px; letter-spacing:1px; text-shadow:0 0 10px #ff008c; }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:20px; padding:18px; max-width:1200px; margin:0 auto 60px; }
+  .card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; overflow:hidden; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.6); transition:transform .28s ease, box-shadow .28s ease; border:1px solid rgba(255,0,128,0.06); }
+  .card:hover { transform: translateY(-8px); box-shadow:0 14px 40px rgba(255,0,128,0.18); }
+  .thumb { width:100%; height:320px; object-fit:cover; display:block; transition: transform .45s ease; }
   .card:hover .thumb { transform: scale(1.06); }
-
-  .btn {
-    display: inline-block;
-    width: calc(100% - 32px);
-    margin: 14px 16px 22px;
-    padding: 12px 10px;
-    background: linear-gradient(90deg, #ff007f, #ff00b3);
-    border-radius: 10px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 6px 18px rgba(255,0,128,0.15);
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
-  }
-  .btn:active { transform: translateY(2px); }
-  .btn:hover { box-shadow: 0 10px 30px rgba(255,0,128,0.25); transform: scale(1.02); }
-
-  /* Responsive tweaks */
-  @media (max-width: 480px) {
-    .thumb { height: 200px; }
-    h1 { font-size: 26px; }
-  }
+  .btn { display:inline-block; width: calc(100% - 32px); margin:14px 16px 22px; padding:12px 10px; background: linear-gradient(90deg,#ff007f,#ff00b3); border-radius:10px; color:#fff; text-decoration:none; font-weight:700; font-size:16px; cursor:pointer; box-shadow:0 6px 18px rgba(255,0,128,0.15); transition: transform .18s ease, box-shadow .18s ease; }
+  .btn:active { transform: translateY(2px); } .btn:hover { box-shadow:0 10px 30px rgba(255,0,128,0.25); transform: scale(1.02); }
+  @media (max-width:480px) { .thumb { height:200px; } h1 { font-size:26px; } }
+  .note { text-align:center; margin-bottom:8px; color:#ffd; font-size:13px; opacity:.9 }
 </style>
 
 <script>
-/* Redirect flow: main tab goes to redirect.html with v= parameter.
-   Replace video URLs in the HTML below with your Feelxlinks mp4 URLs. */
+/*
+ openVideo(videoUrl)
+ - opens redirect.html?v=<encoded> in NEW tab (so gallery remains).
+ - If you prefer direct link open, change behavior below.
+*/
 function openVideo(videoUrl) {
-    // MAIN: open redirect page which will then open the video URL
-    window.location.href = "redirect.html?v=" + encodeURIComponent(videoUrl);
+  // Use redirect page (in a new tab) for tracking or intermediate landing
+  const url = 'redirect.html?v=' + encodeURIComponent(videoUrl);
+  window.open(url, '_blank', 'noopener,noreferrer');
 }
 </script>
-
 </head>
 <body>
-
 <h1>🔥 Trending Gallery</h1>
+<p class="note">Click a card — video opens in a new tab (redirect + tracking)</p>
 
 <div class="gallery">
 
@@ -117,63 +65,11 @@ function openVideo(videoUrl) {
     <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/3V.mp4')">Watch Full Video</div>
   </div>
 
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/4P.jpg" alt="thumb4">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/NLowWdwVmZpR7MO3.mp4')">Watch Full Video</div>
-  </div>
+  <!-- add more cards as needed -->
+</div>
 
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/5P.jpg" alt="thumb5">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/ssstwitter.com_1765208100337.mp4')">Watch Full Video</div>
-  </div>
-
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/6P.jpg" alt="thumb6">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/1V.mp4')">Watch Full Video</div>
-  </div>
-
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/7P.jpg" alt="thumb7">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/2V.mp4')">Watch Full Video</div>
-  </div>
-
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/8P.jpg" alt="thumb8">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/4V.mp4')">Watch Full Video</div>
-  </div>
-
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/9P.jpg" alt="thumb9">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/ssstwitter.com_1765208100337.mp4')">Watch Full Video</div>
-  </div>
-
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/10P.jpg" alt="thumb10">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/3V.mp4')">Watch Full Video</div>
-  </div>
-
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/11P.jpg" alt="thumb11">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/1V.mp4')">Watch Full Video</div>
-  </div>
-
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/12P.jpg" alt="thumb12">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/3V.mp4')">Watch Full Video</div>
-  </div>
-
-</div></div>  <!-- gallery ends -->
-
-<!-- Adsterra Social Bar Script -->
+<!-- Adsterra Social Bar Script (kept as you had it) -->
 <script type="text/javascript" src="//pl28218528.effectivgatecpm.com/77/11/9f/77119f5e4e7d568ca37463d376189f87.js"></script>
-</body>
-</html>
-<p style="text-align:center;">
-  <a href="https://www.effectivegatecpm.com/hetryitngn?key=d460cd8cdb7964c56be49251c1a19a5c"
-     style="color:yellow; font-size:18px; text-decoration:underline;">
-    Open Link
-  </a>
-</p>
 
 </body>
 </html>
