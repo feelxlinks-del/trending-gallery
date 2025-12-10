@@ -1,78 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Redirecting...</title>
+<title>Opening Video...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-    body {
-        background: #000;
-        color: #fff;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        padding-top: 150px;
-    }
-    .box {
-        background: #111;
-        padding: 25px;
-        border-radius: 10px;
-        width: 80%;
-        max-width: 400px;
-        margin: auto;
-        box-shadow: 0 0 20px #ff0080;
-    }
-    .loader {
-        width: 40px;
-        height: 40px;
-        margin: 20px auto;
-        border-radius: 50%;
-        border: 4px solid #444;
-        border-top-color: #ff0080;
-        animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-        100% { transform: rotate(360deg); }
-    }
-    button {
-        background: #ff0080;
-        border: none;
-        padding: 10px 20px;
-        color: #fff;
-        border-radius: 8px;
-        margin-top: 10px;
-        cursor: pointer;
-        font-size: 16px;
-    }
+body {
+  background: #000;
+  color: #fff;
+  text-align: center;
+  padding-top: 150px;
+  font-family: Arial;
+}
+.box {
+  background: #111;
+  padding: 25px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 400px;
+  margin: auto;
+  box-shadow: 0 0 20px #ff0080;
+}
+.loader {
+  width: 40px;
+  height: 40px;
+  margin: 20px auto;
+  border-radius: 50%;
+  border: 4px solid #444;
+  border-top-color: #ff0080;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {100% {transform: rotate(360deg);}}
+button {
+  background: #ff0080;
+  border: none;
+  padding: 10px 20px;
+  color: #fff;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- YOUR AD SCRIPT -->
-<script
-  type="text/javascript"
-  src="//pl28218528.effectivegatecpm.com/77/11/9f/77119f5e4e7d568ca37463d376189f87.js">
-</script>
-
 <div class="box">
-    <h2>🔥 Preparing your content...</h2>
-    <p>You will be redirected shortly</p>
-
-    <div class="loader"></div>
-
-    <button onclick="goNow()">Open Now</button>
+  <h2>🔥 Loading your video…</h2>
+  <p>Please wait…</p>
+  <div class="loader"></div>
+  <button onclick="openVideo()">Open Now</button>
 </div>
 
 <script>
-// Auto redirect after 3 seconds
+// Auto open after 2.5 sec
 setTimeout(function(){
-    window.location.href = "https://www.effectivegatecpm.com/r3gjuqky?key=1db5f3263e99c630475f63baabf93f34";
-}, 3000);
+    openVideo();
+}, 2500);
 
-// Button fallback
-function goNow() {
-    window.location.href = "https://www.effectivegatecpm.com/r3gjuqky?key=1db5f3263e99c630475f63baabf93f34";
+function openVideo(){
+    window.location.href = "https://feelxlinks.b-cdn.net/1V.mp4";
 }
 </script>
 
