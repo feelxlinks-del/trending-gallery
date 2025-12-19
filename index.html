@@ -3,186 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trending Video Gallery</title>
+<title>Trending Gallery</title>
 
 <style>
-*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-body{margin:0;background:#0f0f0f;color:#fff}
-
-/* ===== LAYOUT ===== */
-.container{display:flex;margin-top:60px;margin-bottom:60px}
-.sidebar{
-  width:220px;background:#151515;padding:12px;
-}
-.sidebar a{
-  display:block;color:#ccc;text-decoration:none;
-  padding:8px;border-radius:6px
-}
-.sidebar a:hover{background:#222;color:#fff}
-
-.content{flex:1;padding:12px}
-
-/* ===== GRID ===== */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:12px
-}
-.card{
-  background:#1c1c1c;
-  border-radius:10px;
-  overflow:hidden
-}
-
-.video-wrap img,
-.video-wrap video{
-  width:100%;
-  height:120px;
-  object-fit:cover;
-}
-
-/* ===== BUTTON ===== */
-.watch-btn{
-  width:100%;
-  background:#ff0066;
+body{
+  margin:0;
+  background:#0f0f0f;
   color:#fff;
-  border:none;
-  padding:10px;
-  font-size:14px;
-  font-weight:bold;
-  cursor:pointer
+  font-family:Arial,Helvetica,sans-serif;
 }
 
-/* ===== TELEGRAM ===== */
-.telegram{
-  position:fixed;
-  right:15px;
-  bottom:80px;
+/* HEADER */
+.header{
+  padding:14px;
+  font-size:20px;
+  font-weight:bold;
+}
+
+/* TOP BAR */
+.topbar{
+  display:flex;
+  gap:10px;
+  padding:10px;
+}
+
+/* COUNTRY SELECT */
+select{
+  flex:1;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  font-size:15px;
+}
+
+/* TELEGRAM */
+.tg{
   background:#229ED9;
   color:#fff;
-  width:52px;height:52px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
   text-decoration:none;
+  padding:10px 14px;
+  border-radius:8px;
   font-weight:bold;
-  z-index:1000;
 }
 
-/* ===== MOBILE ===== */
-@media(max-width:768px){
-  .container{flex-direction:column}
-  .sidebar{width:100%}
-  .grid{grid-template-columns:repeat(2,1fr)}
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  padding:10px;
+}
+
+.card{
+  background:#111;
+  border-radius:10px;
+  overflow:hidden;
+  position:relative;
+}
+
+/* BADGES */
+.badge{
+  position:absolute;
+  top:8px;
+  left:8px;
+  background:red;
+  color:#fff;
+  font-size:11px;
+  padding:4px 6px;
+  border-radius:6px;
+  font-weight:bold;
+}
+
+.badge.pop{
+  background:#ff9800;
+}
+
+.card img{
+  width:100%;
+  display:block;
+}
+
+.title{
+  padding:6px;
+  font-size:13px;
 }
 </style>
 </head>
 
 <body>
 
-<a class="telegram" href="https://t.me/Hotandspicylinks" target="_blank">TG</a>
+<div class="header">🔥 Trending Videos</div>
 
-<div class="container">
+<!-- COUNTRY + TELEGRAM -->
+<div class="topbar">
+  <select id="country">
+    <option value="US">🇺🇸 United States</option>
+    <option value="IN">🇮🇳 India</option>
+    <option value="UK">🇬🇧 United Kingdom</option>
+    <option value="CA">🇨🇦 Canada</option>
+    <option value="AU">🇦🇺 Australia</option>
+    <option value="OTHER">🌍 Other Countries</option>
+  </select>
 
-<div class="sidebar">
-  <a href="#">🌍 Countries</a>
+  <a class="tg" href="https://t.me/Hotandspicylinks" target="_blank">
+    Telegram
+  </a>
 </div>
 
-<div class="content">
-  <h2 style="color:#ffcc00;margin:0">🔥 Trending Videos</h2>
-  <p style="color:#aaa">Tap preview • Click redirect</p>
+<!-- VIDEO GRID -->
+<div class="grid">
 
-  <div id="videoGrid" class="grid"></div>
-</div>
+  <!-- VIDEO 1 (NEW) -->
+  <a href="watch.html?vid=v1">
+    <div class="card">
+      <div class="badge">NEW</div>
+      <img src="https://via.placeholder.com/400x250?text=Video+1">
+      <div class="title">Hot Clip 1</div>
+    </div>
+  </a>
+
+  <!-- VIDEO 2 (POPULAR) -->
+  <a href="watch.html?vid=v2">
+    <div class="card">
+      <div class="badge pop">POPULAR</div>
+      <img src="https://via.placeholder.com/400x250?text=Video+2">
+      <div class="title">Hot Clip 2</div>
+    </div>
+  </a>
+
+  <!-- VIDEO 3 (NORMAL) -->
+  <a href="watch.html?vid=v3">
+    <div class="card">
+      <img src="https://via.placeholder.com/400x250?text=Video+3">
+      <div class="title">Hot Clip 3</div>
+    </div>
+  </a>
 
 </div>
 
 <script>
-/* ===== VIDEOS ===== */
-const videos=[
-  {
-    id:"v1",
-    src:"https://feelxlinks.b-cdn.net/v1.mp4",
-    thumb:"https://feelxlinks.b-cdn.net/v1i.png"
-  }
-];
-
-/* ===== IMAGE CLICK STATE ===== */
-let imageClickState={};
-
-function renderVideos(){
-  const vg=document.getElementById("videoGrid");
-  vg.innerHTML="";
-
-  videos.forEach(v=>{
-    imageClickState[v.id]=false;
-
-    const c=document.createElement("div");
-    c.className="card";
-
-    c.innerHTML=`
-      <div class="video-wrap">
-        <img src="${v.thumb}">
-        <video src="${v.src}" muted playsinline style="display:none"></video>
-      </div>
-      <button class="watch-btn">▶ Watch Video</button>
-    `;
-
-    const img=c.querySelector("img");
-    const video=c.querySelector("video");
-    const btn=c.querySelector(".watch-btn");
-
-    /* ===== IMAGE LOGIC ===== */
-    img.addEventListener("click",()=>{
-      // FIRST CLICK → GIF PREVIEW
-      if(!imageClickState[v.id]){
-        imageClickState[v.id]=true;
-
-        img.style.display="none";
-        video.style.display="block";
-        video.currentTime=0;
-        video.play();
-
-        setTimeout(()=>{
-          video.pause();
-          video.currentTime=0;
-          video.style.display="none";
-          img.style.display="block";
-        },2500);
-
-        setTimeout(()=>{
-          imageClickState[v.id]=false;
-        },4000);
-
-      }else{
-        // SECOND CLICK → REDIRECT
-        location.href="redirect.html";
-      }
-    });
-
-    /* ===== LONG PRESS (MOBILE) ===== */
-    let pressTimer;
-    img.addEventListener("touchstart",()=>{
-      pressTimer=setTimeout(()=>{
-        location.href="redirect.html";
-      },600);
-    });
-    img.addEventListener("touchend",()=>{
-      clearTimeout(pressTimer);
-    });
-
-    /* ===== WATCH BUTTON ===== */
-    btn.onclick=()=>{
-      location.href="watch.html?vid="+v.id;
-    };
-
-    vg.appendChild(c);
-  });
-}
-
-/* INIT */
-renderVideos();
+// SAVE COUNTRY
+document.getElementById("country").addEventListener("change", e=>{
+  localStorage.setItem("country", e.target.value);
+});
 </script>
 
 </body>
