@@ -11,22 +11,52 @@ body{
   margin:0;
   background:#0b0b0b;
   color:#fff;
+  padding-top:60px;
+  padding-bottom:60px;
 }
 
-/* HEADER */
+/* ===== TOP AD ===== */
+.top-ad{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:50px;
+  background:linear-gradient(90deg,#ff0066,#ffcc00,#ff0066);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  z-index:1000;
+}
+
+/* ===== BOTTOM AD ===== */
+.bottom-ad{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:50px;
+  background:linear-gradient(90deg,#00c6ff,#0072ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  z-index:1000;
+}
+
+/* ===== HEADER ===== */
 .header{
-  padding:14px;
+  padding:12px;
   font-size:22px;
   font-weight:bold;
-  background:#000;
 }
 
-/* TOP BAR */
+/* ===== TOP BAR ===== */
 .topbar{
   display:flex;
   gap:10px;
   padding:10px;
-  background:#000;
 }
 
 /* COUNTRY */
@@ -38,17 +68,7 @@ select{
   font-size:15px;
 }
 
-/* TELEGRAM */
-.tg{
-  background:#229ED9;
-  color:#fff;
-  padding:10px 14px;
-  border-radius:8px;
-  font-weight:bold;
-  text-decoration:none;
-}
-
-/* GRID */
+/* ===== GRID ===== */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
@@ -62,7 +82,6 @@ select{
   border-radius:12px;
   overflow:hidden;
   position:relative;
-  cursor:pointer;
 }
 
 /* IMAGE */
@@ -70,7 +89,6 @@ select{
   width:100%;
   height:220px;
   object-fit:cover;
-  display:block;
 }
 
 /* TITLE */
@@ -85,10 +103,9 @@ select{
   top:8px;
   left:8px;
   background:red;
-  color:#fff;
-  font-size:11px;
   padding:4px 7px;
   border-radius:6px;
+  font-size:11px;
   font-weight:bold;
 }
 
@@ -96,15 +113,44 @@ select{
   background:#ff9800;
 }
 
-/* LINK FIX */
+/* LINKS */
 a{
   text-decoration:none;
   color:inherit;
+}
+
+/* ===== FLOATING TELEGRAM ===== */
+.tg-float{
+  position:fixed;
+  right:15px;
+  bottom:80px;
+  width:56px;
+  height:56px;
+  background:#229ED9;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  color:#fff;
+  animation:blink 1.2s infinite;
+  z-index:2000;
+}
+
+@keyframes blink{
+  0%{box-shadow:0 0 5px #229ED9}
+  50%{box-shadow:0 0 20px #229ED9}
+  100%{box-shadow:0 0 5px #229ED9}
 }
 </style>
 </head>
 
 <body>
+
+<!-- TOP AD -->
+<div class="top-ad">
+  🔥 Sponsored Ad – Click Here
+</div>
 
 <div class="header">🔥 Trending Videos</div>
 
@@ -117,15 +163,10 @@ a{
     <option>🇨🇦 Canada</option>
     <option>🇦🇺 Australia</option>
   </select>
-
-  <a class="tg" href="https://t.me/Hotandspicylinks" target="_blank">
-    Telegram
-  </a>
 </div>
 
 <div class="grid">
 
-  <!-- VIDEO 1 -->
   <a href="watch.html?vid=v1">
     <div class="card">
       <div class="badge">NEW</div>
@@ -134,7 +175,6 @@ a{
     </div>
   </a>
 
-  <!-- VIDEO 2 -->
   <a href="watch.html?vid=v2">
     <div class="card">
       <div class="badge pop">POPULAR</div>
@@ -143,15 +183,17 @@ a{
     </div>
   </a>
 
-  <!-- VIDEO 3 -->
-  <a href="watch.html?vid=v3">
-    <div class="card">
-      <img src="https://dummyimage.com/400x600/222/fff.jpg&text=HOT+VIDEO+3">
-      <div class="title">Hot Clip 3</div>
-    </div>
-  </a>
-
 </div>
+
+<!-- BOTTOM AD -->
+<div class="bottom-ad">
+  💰 Scroll Ad – Earn Money
+</div>
+
+<!-- TELEGRAM FLOAT -->
+<a href="https://t.me/Hotandspicylinks" target="_blank" class="tg-float">
+  ✈️
+</a>
 
 </body>
 </html>
