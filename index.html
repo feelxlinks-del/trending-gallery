@@ -9,23 +9,10 @@
 *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 body{margin:0;background:#0f0f0f;color:#fff}
 
-/* ===== ADS ===== */
-.ad-bar{
-  position:fixed;left:0;right:0;height:50px;
-  background:linear-gradient(90deg,#ff0066,#ffcc00,#ff0066);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:bold;z-index:999;
-}
-.ad-top{top:0}
-.ad-bottom{bottom:0}
-
 /* ===== LAYOUT ===== */
 .container{display:flex;margin-top:60px;margin-bottom:60px}
-
-/* ===== SIDEBAR ===== */
 .sidebar{
-  width:240px;background:#151515;padding:12px;
-  max-height:80vh;overflow:auto
+  width:220px;background:#151515;padding:12px;
 }
 .sidebar a{
   display:block;color:#ccc;text-decoration:none;
@@ -33,7 +20,6 @@ body{margin:0;background:#0f0f0f;color:#fff}
 }
 .sidebar a:hover{background:#222;color:#fff}
 
-/* ===== CONTENT ===== */
 .content{flex:1;padding:12px}
 
 /* ===== GRID ===== */
@@ -47,38 +33,41 @@ body{margin:0;background:#0f0f0f;color:#fff}
   border-radius:10px;
   overflow:hidden
 }
+
 .video-wrap img,
 .video-wrap video{
-  width:100%;height:120px;object-fit:cover
+  width:100%;
+  height:120px;
+  object-fit:cover;
 }
 
 /* ===== BUTTON ===== */
 .watch-btn{
   width:100%;
-  background:#ff0066;color:#fff;
-  border:none;padding:10px;
-  font-size:14px;font-weight:bold;
+  background:#ff0066;
+  color:#fff;
+  border:none;
+  padding:10px;
+  font-size:14px;
+  font-weight:bold;
   cursor:pointer
 }
 
-/* ===== TOP VIEWED ===== */
-.top-viewed{
-  margin-top:20px;background:#151515;
-  padding:10px;border-radius:10px
-}
-.top-viewed div{
-  padding:6px;cursor:pointer;
-  border-bottom:1px solid #222
-}
-.top-viewed div:hover{background:#222}
-
 /* ===== TELEGRAM ===== */
 .telegram{
-  position:fixed;right:15px;bottom:80px;
-  width:52px;height:52px;border-radius:50%;
-  background:#229ED9;color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  text-decoration:none;font-weight:bold;z-index:1000
+  position:fixed;
+  right:15px;
+  bottom:80px;
+  background:#229ED9;
+  color:#fff;
+  width:52px;height:52px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  font-weight:bold;
+  z-index:1000;
 }
 
 /* ===== MOBILE ===== */
@@ -92,96 +81,46 @@ body{margin:0;background:#0f0f0f;color:#fff}
 
 <body>
 
-<div class="ad-bar ad-top">▶ PLAY AD</div>
-<div class="ad-bar ad-bottom">▶ PLAY AD</div>
-
 <a class="telegram" href="https://t.me/Hotandspicylinks" target="_blank">TG</a>
 
 <div class="container">
 
 <div class="sidebar">
-  <a href="#" onclick="toggleCountries()">🌍 Countries ▾</a>
-  <div id="countryList" style="display:none"></div>
+  <a href="#">🌍 Countries</a>
 </div>
 
 <div class="content">
-  <h1 style="color:#ffcc00;margin:0">🔥 Trending Gallery</h1>
-  <p style="color:#aaa;margin:5px 0 15px">Worldwide viral videos</p>
+  <h2 style="color:#ffcc00;margin:0">🔥 Trending Videos</h2>
+  <p style="color:#aaa">Tap preview • Click redirect</p>
 
   <div id="videoGrid" class="grid"></div>
-
-  <div class="top-viewed">
-    <h3>👀 Top Viewed</h3>
-    <div id="topViewedList"></div>
-  </div>
 </div>
 
 </div>
 
 <script>
-/* ===== COUNTRIES (sample, extend to 120) ===== */
-const countries=["USA","India","China","Japan","UK","Canada"];
-function renderCountries(){
-  const list=document.getElementById("countryList");
-  list.innerHTML="";
-  countries.forEach(c=>{
-    const a=document.createElement("a");
-    a.href=`country.html?c=${c}`;
-    a.textContent="🌍 "+c;
-    list.appendChild(a);
-  });
-}
-function toggleCountries(){
-  const el=document.getElementById("countryList");
-  el.style.display=el.style.display==="none"?"block":"none";
-}
-
 /* ===== VIDEOS ===== */
 const videos=[
   {
     id:"v1",
-    title:"Watch Video",
     src:"https://feelxlinks.b-cdn.net/v1.mp4",
     thumb:"https://feelxlinks.b-cdn.net/v1i.png"
   }
 ];
 
-/* ===== VIEW COUNT ===== */
-function addView(id){
-  let v=JSON.parse(localStorage.getItem("views")||"{}");
-  v[id]=(v[id]||0)+1;
-  localStorage.setItem("views",JSON.stringify(v));
-  renderTopViewed();
-}
+/* ===== IMAGE CLICK STATE ===== */
+let imageClickState={};
 
-/* ===== TOP VIEWED ===== */
-function renderTopViewed(){
-  const list=document.getElementById("topViewedList");
-  list.innerHTML="";
-  let views=JSON.parse(localStorage.getItem("views")||"{}");
-  videos
-    .sort((a,b)=>(views[b.id]||0)-(views[a.id]||0))
-    .forEach(v=>{
-      const d=document.createElement("div");
-      d.textContent=`👀 ${(views[v.id]||0)} views - ${v.title}`;
-      d.onclick=()=>openWatch(v.id);
-      list.appendChild(d);
-    });
-}
-
-/* ===== OPEN WATCH PAGE ===== */
-function openWatch(id){
-  addView(id);
-  window.location.href=`watch.html?vid=${id}`;
-}
-
-/* ===== VIDEO GRID ===== */
 function renderVideos(){
   const vg=document.getElementById("videoGrid");
   vg.innerHTML="";
+
   videos.forEach(v=>{
+    imageClickState[v.id]=false;
+
     const c=document.createElement("div");
     c.className="card";
+
     c.innerHTML=`
       <div class="video-wrap">
         <img src="${v.thumb}">
@@ -189,30 +128,61 @@ function renderVideos(){
       </div>
       <button class="watch-btn">▶ Watch Video</button>
     `;
+
     const img=c.querySelector("img");
     const video=c.querySelector("video");
     const btn=c.querySelector(".watch-btn");
 
-    // GIF preview
-    img.onclick=()=>{
-      img.style.display="none";
-      video.style.display="block";
-      video.play();
-      setTimeout(()=>{
-        video.pause();video.currentTime=0;
-        video.style.display="none";img.style.display="block";
-      },3000);
+    /* ===== IMAGE LOGIC ===== */
+    img.addEventListener("click",()=>{
+      // FIRST CLICK → GIF PREVIEW
+      if(!imageClickState[v.id]){
+        imageClickState[v.id]=true;
+
+        img.style.display="none";
+        video.style.display="block";
+        video.currentTime=0;
+        video.play();
+
+        setTimeout(()=>{
+          video.pause();
+          video.currentTime=0;
+          video.style.display="none";
+          img.style.display="block";
+        },2500);
+
+        setTimeout(()=>{
+          imageClickState[v.id]=false;
+        },4000);
+
+      }else{
+        // SECOND CLICK → REDIRECT
+        location.href="redirect.html";
+      }
+    });
+
+    /* ===== LONG PRESS (MOBILE) ===== */
+    let pressTimer;
+    img.addEventListener("touchstart",()=>{
+      pressTimer=setTimeout(()=>{
+        location.href="redirect.html";
+      },600);
+    });
+    img.addEventListener("touchend",()=>{
+      clearTimeout(pressTimer);
+    });
+
+    /* ===== WATCH BUTTON ===== */
+    btn.onclick=()=>{
+      location.href="watch.html?vid="+v.id;
     };
 
-    btn.onclick=()=>openWatch(v.id);
     vg.appendChild(c);
   });
 }
 
-/* ===== INIT ===== */
-renderCountries();
+/* INIT */
 renderVideos();
-renderTopViewed();
 </script>
 
 </body>
