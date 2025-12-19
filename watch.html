@@ -13,13 +13,12 @@ body{
   font-family:Arial,Helvetica,sans-serif;
 }
 
-video{
+video, img{
   width:100%;
   max-height:80vh;
   background:#000;
 }
 
-/* Scroll cards */
 .section{
   padding:12px;
 }
@@ -31,45 +30,53 @@ video{
   overflow:hidden;
   cursor:pointer;
 }
-
-.card img{
-  width:100%;
-  display:block;
-}
 </style>
 </head>
 
 <body>
 
 <!-- ===== VIDEO PLAYER ===== -->
-<video id="video" controls playsinline preload="metadata">
-  <source src="video.mp4" type="video/mp4">
-  Your browser does not support video.
-</video>
+<video id="video" controls playsinline preload="metadata"></video>
 
-<!-- ===== SCROLL ADS / MORE VIDEOS ===== -->
+<!-- ===== SCROLL ADS ===== -->
 <div class="section">
-
   <div class="card" onclick="goRedirect('scroll1')">
-    <img src="ad1.jpg" alt="More video">
+    <img src="ad1.jpg">
   </div>
 
   <div class="card" onclick="goRedirect('scroll2')">
-    <img src="ad2.jpg" alt="More video">
+    <img src="ad2.jpg">
   </div>
-
 </div>
 
 <script>
-/* ===== REDIRECT FUNCTION (ONLY redirect.html) ===== */
+/* ===== GET VIDEO ID ===== */
+const params = new URLSearchParams(window.location.search);
+const vid = params.get("vid") || "v1";
+
+/* ===== FILE PATHS ===== */
+const mp4Path = vid + ".mp4";
+const gifPath = vid + ".gif";
+
+const video = document.getElementById("video");
+
+/* ===== LOAD VIDEO ===== */
+video.innerHTML = `
+  <source src="${mp4Path}" type="video/mp4">
+`;
+
+/* ===== IF VIDEO FAILS → SHOW GIF ===== */
+video.onerror = function(){
+  video.outerHTML = `<img src="${gifPath}" alt="Preview">`;
+};
+
+/* ===== REDIRECT FUNCTION ===== */
 function goRedirect(subid){
-  window.location.href = "redirect.html?subid=" + subid;
+  window.location.href = "redirect.html?subid=" + subid + "&vid=" + vid;
 }
 
 /* ===== FAST FORWARD DETECTION ===== */
 let seekCount = 0;
-const video = document.getElementById("video");
-
 video.addEventListener("seeking", function(){
   seekCount++;
   if(seekCount >= 3){
@@ -77,11 +84,6 @@ video.addEventListener("seeking", function(){
   }
 });
 </script>
-
-<!-- ===== CLICKAINE POPUNDER (PASTE YOUR SCRIPT BELOW) ===== -->
-<!--
-<script src="CLICKAINE_POP_SCRIPT.js"></script>
--->
 
 </body>
 </html>
