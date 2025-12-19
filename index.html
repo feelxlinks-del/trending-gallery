@@ -20,26 +20,16 @@ body{margin:0;background:#0f0f0f;color:#fff}
 .ad-bottom{bottom:0}
 
 /* ===== LAYOUT ===== */
-.container{
-  display:flex;
-  margin-top:60px;
-  margin-bottom:60px;
-}
+.container{display:flex;margin-top:60px;margin-bottom:60px}
 
 /* ===== SIDEBAR ===== */
 .sidebar{
-  width:240px;
-  background:#151515;
-  padding:12px;
-  max-height:80vh;
-  overflow:auto;
+  width:240px;background:#151515;padding:12px;
+  max-height:80vh;overflow:auto
 }
 .sidebar a{
-  display:block;
-  color:#ccc;
-  text-decoration:none;
-  padding:8px;
-  border-radius:6px;
+  display:block;color:#ccc;text-decoration:none;
+  padding:8px;border-radius:6px
 }
 .sidebar a:hover{background:#222;color:#fff}
 
@@ -50,65 +40,45 @@ body{margin:0;background:#0f0f0f;color:#fff}
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:12px;
+  gap:12px
 }
 .card{
   background:#1c1c1c;
   border-radius:10px;
-  overflow:hidden;
+  overflow:hidden
 }
-
-/* ===== VIDEO ===== */
 .video-wrap img,
 .video-wrap video{
-  width:100%;
-  height:120px;
-  object-fit:cover;
+  width:100%;height:120px;object-fit:cover
 }
 
 /* ===== BUTTON ===== */
 .watch-btn{
   width:100%;
-  background:#ff0066;
-  color:#fff;
-  border:none;
-  padding:10px;
-  font-size:14px;
-  font-weight:bold;
-  cursor:pointer;
+  background:#ff0066;color:#fff;
+  border:none;padding:10px;
+  font-size:14px;font-weight:bold;
+  cursor:pointer
 }
 
 /* ===== TOP VIEWED ===== */
 .top-viewed{
-  margin-top:20px;
-  background:#151515;
-  padding:10px;
-  border-radius:10px;
+  margin-top:20px;background:#151515;
+  padding:10px;border-radius:10px
 }
-.top-viewed h3{margin:0 0 10px}
 .top-viewed div{
-  padding:6px;
-  cursor:pointer;
-  border-bottom:1px solid #222;
+  padding:6px;cursor:pointer;
+  border-bottom:1px solid #222
 }
 .top-viewed div:hover{background:#222}
 
 /* ===== TELEGRAM ===== */
 .telegram{
-  position:fixed;
-  right:15px;
-  bottom:80px;
-  background:#229ED9;
-  color:#fff;
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-decoration:none;
-  font-weight:bold;
-  z-index:1000;
+  position:fixed;right:15px;bottom:80px;
+  width:52px;height:52px;border-radius:50%;
+  background:#229ED9;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;font-weight:bold;z-index:1000
 }
 
 /* ===== MOBILE ===== */
@@ -129,13 +99,11 @@ body{margin:0;background:#0f0f0f;color:#fff}
 
 <div class="container">
 
-<!-- SIDEBAR -->
 <div class="sidebar">
   <a href="#" onclick="toggleCountries()">🌍 Countries ▾</a>
   <div id="countryList" style="display:none"></div>
 </div>
 
-<!-- CONTENT -->
 <div class="content">
   <h1 style="color:#ffcc00;margin:0">🔥 Trending Gallery</h1>
   <p style="color:#aaa;margin:5px 0 15px">Worldwide viral videos</p>
@@ -151,28 +119,14 @@ body{margin:0;background:#0f0f0f;color:#fff}
 </div>
 
 <script>
-/* ===== COUNTRIES (shortened for clarity) ===== */
-const countries=["USA","India","China","Japan","UK","Canada","Australia","Germany","France","Italy"];
-
-/* ===== VIDEO DATA ===== */
-const videos=[
-  {
-    id:"v1",
-    title:"Watch Video",
-    src:"https://feelxlinks.b-cdn.net/v1.mp4",
-    thumb:"https://feelxlinks.b-cdn.net/v1i.png"
-  }
-];
-
-let currentPlayingId=null;
-
-/* ===== COUNTRIES ===== */
+/* ===== COUNTRIES (sample, extend to 120) ===== */
+const countries=["USA","India","China","Japan","UK","Canada"];
 function renderCountries(){
   const list=document.getElementById("countryList");
   list.innerHTML="";
   countries.forEach(c=>{
     const a=document.createElement("a");
-    a.href=`country.html?c=${encodeURIComponent(c)}`;
+    a.href=`country.html?c=${c}`;
     a.textContent="🌍 "+c;
     list.appendChild(a);
   });
@@ -181,6 +135,16 @@ function toggleCountries(){
   const el=document.getElementById("countryList");
   el.style.display=el.style.display==="none"?"block":"none";
 }
+
+/* ===== VIDEOS ===== */
+const videos=[
+  {
+    id:"v1",
+    title:"Watch Video",
+    src:"https://feelxlinks.b-cdn.net/v1.mp4",
+    thumb:"https://feelxlinks.b-cdn.net/v1i.png"
+  }
+];
 
 /* ===== VIEW COUNT ===== */
 function addView(id){
@@ -195,36 +159,29 @@ function renderTopViewed(){
   const list=document.getElementById("topViewedList");
   list.innerHTML="";
   let views=JSON.parse(localStorage.getItem("views")||"{}");
-
-  [...videos].sort((a,b)=>(views[b.id]||0)-(views[a.id]||0))
+  videos
+    .sort((a,b)=>(views[b.id]||0)-(views[a.id]||0))
     .forEach(v=>{
       const d=document.createElement("div");
-      d.innerText=`👀 ${(views[v.id]||0)} views - ${v.title}`;
-      d.onclick=()=>playFromTop(v.id);
+      d.textContent=`👀 ${(views[v.id]||0)} views - ${v.title}`;
+      d.onclick=()=>openWatch(v.id);
       list.appendChild(d);
     });
 }
 
-/* ===== PLAY FROM TOP VIEWED ===== */
-function playFromTop(id){
-  const card=document.getElementById("card-"+id);
-  if(card){
-    const btn=card.querySelector(".watch-btn");
-    btn.click();
-    card.scrollIntoView({behavior:"smooth"});
-  }
+/* ===== OPEN WATCH PAGE ===== */
+function openWatch(id){
+  addView(id);
+  window.location.href=`watch.html?vid=${id}`;
 }
 
 /* ===== VIDEO GRID ===== */
 function renderVideos(){
   const vg=document.getElementById("videoGrid");
   vg.innerHTML="";
-
   videos.forEach(v=>{
     const c=document.createElement("div");
     c.className="card";
-    c.id="card-"+v.id;
-
     c.innerHTML=`
       <div class="video-wrap">
         <img src="${v.thumb}">
@@ -232,11 +189,11 @@ function renderVideos(){
       </div>
       <button class="watch-btn">▶ Watch Video</button>
     `;
-
     const img=c.querySelector("img");
     const video=c.querySelector("video");
     const btn=c.querySelector(".watch-btn");
 
+    // GIF preview
     img.onclick=()=>{
       img.style.display="none";
       video.style.display="block";
@@ -244,19 +201,10 @@ function renderVideos(){
       setTimeout(()=>{
         video.pause();video.currentTime=0;
         video.style.display="none";img.style.display="block";
-      },3500);
+      },3000);
     };
 
-    btn.onclick=()=>{
-      img.style.display="none";
-      video.style.display="block";
-      video.muted=false;
-      video.controls=true;
-      video.play();
-      addView(v.id);
-      video.onended=()=>location.href="redirect.html";
-    };
-
+    btn.onclick=()=>openWatch(v.id);
     vg.appendChild(c);
   });
 }
