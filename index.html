@@ -86,6 +86,30 @@ body{margin:0;background:#0f0f0f;color:#fff}
   border-radius:10px;
 }
 .top-viewed h3{margin:0 0 10px}
+.top-viewed div{
+  padding:6px;
+  cursor:pointer;
+  border-bottom:1px solid #222;
+}
+.top-viewed div:hover{background:#222}
+
+/* ===== TELEGRAM ===== */
+.telegram{
+  position:fixed;
+  right:15px;
+  bottom:80px;
+  background:#229ED9;
+  color:#fff;
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  font-weight:bold;
+  z-index:1000;
+}
 
 /* ===== MOBILE ===== */
 @media(max-width:768px){
@@ -100,6 +124,8 @@ body{margin:0;background:#0f0f0f;color:#fff}
 
 <div class="ad-bar ad-top">▶ PLAY AD</div>
 <div class="ad-bar ad-bottom">▶ PLAY AD</div>
+
+<a class="telegram" href="https://t.me/Hotandspicylinks" target="_blank">TG</a>
 
 <div class="container">
 
@@ -125,23 +151,8 @@ body{margin:0;background:#0f0f0f;color:#fff}
 </div>
 
 <script>
-/* ===== COUNTRIES ===== */
-const countries=[
-"USA","India","China","Japan","UK","Canada","Australia","Germany","France","Italy",
-"Spain","Brazil","Mexico","Argentina","Russia","Ukraine","Poland","Netherlands",
-"Belgium","Sweden","Norway","Finland","Denmark","Switzerland","Austria","Czech",
-"Slovakia","Romania","Hungary","Bulgaria","Greece","Turkey","Egypt","Saudi Arabia",
-"UAE","Qatar","Kuwait","Oman","Iran","Iraq","Israel","Pakistan","Bangladesh",
-"Sri Lanka","Nepal","Bhutan","Myanmar","Thailand","Vietnam","Indonesia","Malaysia",
-"Singapore","Philippines","Taiwan","Hong Kong","Mongolia","Kazakhstan","Uzbekistan",
-"South Africa","Nigeria","Kenya","Ethiopia","Ghana","Uganda","Tanzania","Zambia",
-"Zimbabwe","Morocco","Algeria","Tunisia","Libya","Sudan","Angola","Mozambique",
-"Madagascar","Chile","Peru","Colombia","Venezuela","Bolivia","Ecuador","Panama",
-"Costa Rica","Nicaragua","Honduras","Guatemala","El Salvador","Jamaica","Haiti",
-"Dominican Republic","Cuba","Trinidad","Bahamas","Fiji","Samoa","Tonga",
-"New Zealand","Iceland","Ireland","Portugal","Luxembourg","Latvia","Lithuania",
-"Estonia"
-];
+/* ===== COUNTRIES (shortened for clarity) ===== */
+const countries=["USA","India","China","Japan","UK","Canada","Australia","Germany","France","Italy"];
 
 /* ===== VIDEO DATA ===== */
 const videos=[
@@ -153,7 +164,9 @@ const videos=[
   }
 ];
 
-/* ===== RENDER COUNTRIES ===== */
+let currentPlayingId=null;
+
+/* ===== COUNTRIES ===== */
 function renderCountries(){
   const list=document.getElementById("countryList");
   list.innerHTML="";
@@ -186,9 +199,20 @@ function renderTopViewed(){
   [...videos].sort((a,b)=>(views[b.id]||0)-(views[a.id]||0))
     .forEach(v=>{
       const d=document.createElement("div");
-      d.textContent=`👀 ${(views[v.id]||0)} views - ${v.title}`;
+      d.innerText=`👀 ${(views[v.id]||0)} views - ${v.title}`;
+      d.onclick=()=>playFromTop(v.id);
       list.appendChild(d);
     });
+}
+
+/* ===== PLAY FROM TOP VIEWED ===== */
+function playFromTop(id){
+  const card=document.getElementById("card-"+id);
+  if(card){
+    const btn=card.querySelector(".watch-btn");
+    btn.click();
+    card.scrollIntoView({behavior:"smooth"});
+  }
 }
 
 /* ===== VIDEO GRID ===== */
@@ -199,6 +223,7 @@ function renderVideos(){
   videos.forEach(v=>{
     const c=document.createElement("div");
     c.className="card";
+    c.id="card-"+v.id;
 
     c.innerHTML=`
       <div class="video-wrap">
@@ -212,22 +237,16 @@ function renderVideos(){
     const video=c.querySelector("video");
     const btn=c.querySelector(".watch-btn");
 
-    /* Thumbnail → GIF preview */
     img.onclick=()=>{
       img.style.display="none";
       video.style.display="block";
-      video.currentTime=0;
       video.play();
-
       setTimeout(()=>{
-        video.pause();
-        video.currentTime=0;
-        video.style.display="none";
-        img.style.display="block";
+        video.pause();video.currentTime=0;
+        video.style.display="none";img.style.display="block";
       },3500);
     };
 
-    /* Button → FULL PLAY */
     btn.onclick=()=>{
       img.style.display="none";
       video.style.display="block";
@@ -235,11 +254,7 @@ function renderVideos(){
       video.controls=true;
       video.play();
       addView(v.id);
-    };
-
-    /* Video click → REDIRECT */
-    video.onclick=()=>{
-      location.href="redirect.html";
+      video.onended=()=>location.href="redirect.html";
     };
 
     vg.appendChild(c);
