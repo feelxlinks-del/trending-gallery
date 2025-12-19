@@ -9,7 +9,7 @@
 *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 body{margin:0;background:#0f0f0f;color:#fff}
 
-/* ===== TOP UPDATE BANNER ===== */
+/* ===== UPDATE BANNER ===== */
 #updateBanner{
   display:none;
   background:#ff0066;
@@ -32,7 +32,7 @@ body{margin:0;background:#0f0f0f;color:#fff}
   position:fixed;left:0;right:0;height:50px;
   background:linear-gradient(90deg,#ff0066,#ffcc00,#ff0066);
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;z-index:9000;font-weight:bold
+  font-weight:bold;z-index:999;
 }
 .ad-top{top:0}
 .ad-bottom{bottom:0}
@@ -46,9 +46,11 @@ body{margin:0;background:#0f0f0f;color:#fff}
 
 /* ===== SIDEBAR ===== */
 .sidebar{
-  width:200px;
+  width:240px;
   background:#151515;
   padding:12px;
+  max-height:80vh;
+  overflow:auto;
 }
 .sidebar a{
   display:block;
@@ -59,10 +61,9 @@ body{margin:0;background:#0f0f0f;color:#fff}
 }
 .sidebar a:hover{background:#222;color:#fff}
 
-/* NEW badge */
 .badge{
   background:red;
-  color:#fff;
+  color:white;
   font-size:10px;
   padding:2px 6px;
   border-radius:6px;
@@ -84,17 +85,25 @@ body{margin:0;background:#0f0f0f;color:#fff}
   overflow:hidden;
   cursor:pointer;
 }
-.card video{
+.card img{
   width:100%;
   height:120px;
   object-fit:cover;
 }
-.card p{margin:8px;font-size:14px}
+
+/* ===== TOP VIEWED ===== */
+.top-viewed{
+  margin-top:20px;
+  background:#151515;
+  padding:10px;
+  border-radius:10px;
+}
+.top-viewed h3{margin:0 0 10px}
 
 /* ===== MOBILE ===== */
 @media(max-width:768px){
   .container{flex-direction:column}
-  .sidebar{width:100%}
+  .sidebar{width:100%;max-height:none}
   .grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
@@ -125,84 +134,109 @@ body{margin:0;background:#0f0f0f;color:#fff}
   <p style="color:#aaa;margin:5px 0 15px">Worldwide viral videos</p>
 
   <div id="videoGrid" class="grid"></div>
+
+  <div class="top-viewed">
+    <h3>👀 Top Viewed</h3>
+    <div id="topViewedList"></div>
+  </div>
 </div>
 
 </div>
 
 <script>
-/* ===== REDIRECT ===== */
+/* ===== CONFIG ===== */
 const REDIRECT_LINK = "redirect.html";
 
-/* ===== 120 COUNTRIES DATA (sample subset) ===== */
-const countryData = {
-  usa:   { name:"USA",   lastUpdated:"2025-01-22", hasNew:true },
-  india: { name:"India", lastUpdated:"2025-01-15", hasNew:false },
-  china: { name:"China", lastUpdated:"2025-01-21", hasNew:true },
-  japan: { name:"Japan", lastUpdated:"2025-01-10", hasNew:false }
-  // 👉 ila 120 countries add cheyochu
-};
+/* ===== 120 COUNTRIES LIST ===== */
+const countries = [
+"USA","India","China","Japan","UK","Canada","Australia","Germany","France","Italy",
+"Spain","Brazil","Mexico","Argentina","Russia","Ukraine","Poland","Netherlands",
+"Belgium","Sweden","Norway","Finland","Denmark","Switzerland","Austria","Czech",
+"Slovakia","Romania","Hungary","Bulgaria","Greece","Turkey","Egypt","Saudi Arabia",
+"UAE","Qatar","Kuwait","Oman","Iran","Iraq","Israel","Pakistan","Bangladesh",
+"Sri Lanka","Nepal","Bhutan","Myanmar","Thailand","Vietnam","Indonesia","Malaysia",
+"Singapore","Philippines","Taiwan","Hong Kong","Mongolia","Kazakhstan","Uzbekistan",
+"South Africa","Nigeria","Kenya","Ethiopia","Ghana","Uganda","Tanzania","Zambia",
+"Zimbabwe","Morocco","Algeria","Tunisia","Libya","Sudan","Angola","Mozambique",
+"Madagascar","Chile","Peru","Colombia","Venezuela","Bolivia","Ecuador","Panama",
+"Costa Rica","Nicaragua","Honduras","Guatemala","El Salvador","Jamaica","Haiti",
+"Dominican Republic","Cuba","Trinidad","Bahamas","Fiji","Samoa","Tonga",
+"New Zealand","Iceland","Ireland","Portugal","Luxembourg","Latvia","Lithuania",
+"Estonia"
+];
 
-/* ===== SAMPLE VIDEOS (HOME PAGE) ===== */
+/* ===== VIDEOS ===== */
 const videos = [
   {
-    title:"🔥 Viral Clip",
-    src:"https://feelxlinks.b-cdn.net/v1.mp4"
+    id: "v1",
+    title: "Watch Video",
+    src: "https://feelxlinks.b-cdn.net/v1.mp4",
+    thumb: "https://feelxlinks.b-cdn.net/v1i.png"
   }
 ];
 
-/* ===== RENDER COUNTRIES ===== */
+/* ===== COUNTRIES RENDER ===== */
 function renderCountries(){
   const list = document.getElementById("countryList");
-  list.innerHTML = "";
-
-  Object.keys(countryData).forEach(key=>{
-    const c = countryData[key];
-    const a = document.createElement("a");
-    a.href = `country.html?c=${key}`;
-    a.innerHTML = `🌍 ${c.name} ${c.hasNew ? '<span class=\"badge\">NEW</span>' : ''}`;
+  list.innerHTML="";
+  countries.forEach(c=>{
+    const a=document.createElement("a");
+    a.href=`country.html?c=${encodeURIComponent(c)}`;
+    a.textContent="🌍 "+c;
     list.appendChild(a);
   });
 }
-
-/* ===== TOGGLE ===== */
 function toggleCountries(){
-  const el = document.getElementById("countryList");
-  el.style.display = el.style.display === "none" ? "block" : "none";
+  const el=document.getElementById("countryList");
+  el.style.display=el.style.display==="none"?"block":"none";
 }
 
-/* ===== UPDATE BANNER LOGIC ===== */
-function showUpdates(){
-  const lastSeen = localStorage.getItem("lastSeen") || "2025-01-01";
-  const updatedCountries = [];
+/* ===== VIEW TRACKING (AUTO TOP VIEWED) ===== */
+function addView(videoId){
+  let views = JSON.parse(localStorage.getItem("views")||"{}");
+  views[videoId]=(views[videoId]||0)+1;
+  localStorage.setItem("views",JSON.stringify(views));
+  renderTopViewed();
+}
 
-  Object.values(countryData).forEach(c=>{
-    if(c.lastUpdated > lastSeen){
-      updatedCountries.push(c.name);
-    }
+/* ===== TOP VIEWED RENDER ===== */
+function renderTopViewed(){
+  const list=document.getElementById("topViewedList");
+  list.innerHTML="";
+  let views = JSON.parse(localStorage.getItem("views")||"{}");
+
+  const sorted=[...videos].sort((a,b)=>
+    (views[b.id]||0)-(views[a.id]||0)
+  );
+
+  sorted.slice(0,5).forEach(v=>{
+    const d=document.createElement("div");
+    d.style.marginBottom="6px";
+    d.innerHTML=`👀 ${(views[v.id]||0)} views - ${v.title}`;
+    list.appendChild(d);
   });
-
-  if(updatedCountries.length){
-    document.getElementById("bannerText").innerText =
-      "🔥 New videos added in " + updatedCountries.join(" • ");
-    document.getElementById("updateBanner").style.display = "block";
-  }
-
-  localStorage.setItem("lastSeen", new Date().toISOString().split("T")[0]);
 }
 
-/* ===== RENDER VIDEOS ===== */
+/* ===== VIDEO GRID ===== */
 function renderVideos(){
-  const vg = document.getElementById("videoGrid");
-  vg.innerHTML = "";
-
+  const vg=document.getElementById("videoGrid");
+  vg.innerHTML="";
   videos.forEach(v=>{
-    const c = document.createElement("div");
-    c.className = "card";
-    c.onclick = ()=>location.href = REDIRECT_LINK;
-
-    c.innerHTML = `
-      <video src="${v.src}" muted playsinline preload="metadata"></video>
-      <p>${v.title}</p>
+    const c=document.createElement("div");
+    c.className="card";
+    c.onclick=()=>{
+      addView(v.id);
+      location.href=REDIRECT_LINK;
+    };
+    c.innerHTML=`
+      <div style="position:relative">
+        <img src="${v.thumb}">
+        <div style="position:absolute;inset:0;
+          display:flex;align-items:center;justify-content:center;
+          background:rgba(0,0,0,0.4);font-weight:bold">
+          ▶ Watch Video
+        </div>
+      </div>
     `;
     vg.appendChild(c);
   });
@@ -211,7 +245,7 @@ function renderVideos(){
 /* ===== INIT ===== */
 renderCountries();
 renderVideos();
-showUpdates();
+renderTopViewed();
 </script>
 
 </body>
