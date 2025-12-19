@@ -13,7 +13,7 @@ body{
   font-family:Arial,Helvetica,sans-serif;
 }
 
-/* ===== STICKY ADS ===== */
+/* ===== STICKY BARS ===== */
 .ad-bar{
   position:fixed;
   left:0;
@@ -42,77 +42,102 @@ video{
   max-width:900px;
 }
 
-/* ===== SCROLL CONTENT ===== */
+/* ===== SCROLL AREA ===== */
 .scroll-content{
   padding:20px;
   max-width:900px;
   margin:auto;
 }
 
-/* ===== SCROLL ADS ===== */
-.scroll-ad{
-  margin:60px 0;
-  padding:20px;
-  background:#151515;
-  border-radius:10px;
-  text-align:center;
+/* ===== VIDEO STYLE CARD (ADS) ===== */
+.video-ad{
+  position:relative;
+  margin:50px 0;
+  border-radius:12px;
+  overflow:hidden;
   cursor:pointer;
+}
+.video-ad img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  filter:brightness(0.7);
+}
+.video-ad .play{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#ff0066;
+  color:#fff;
+  padding:12px 22px;
+  border-radius:30px;
   font-weight:bold;
 }
-.scroll-ad span{
-  display:block;
-  margin-top:8px;
+.video-ad .label{
+  position:absolute;
+  bottom:10px;
+  left:10px;
   font-size:13px;
-  color:#aaa;
+  background:rgba(0,0,0,0.6);
+  padding:4px 8px;
+  border-radius:6px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- TOP STICKY AD -->
-<div class="ad-bar ad-top" onclick="goRedirect()">▶ Sponsored Ad</div>
+<!-- TOP BAR -->
+<div class="ad-bar ad-top" onclick="goRedirect()">▶ Play Now</div>
 
-<!-- VIDEO -->
+<!-- MAIN VIDEO -->
 <div class="video-container">
   <video id="player" controls autoplay playsinline></video>
 </div>
 
-<!-- SCROLLABLE CONTENT WITH ADS -->
+<!-- SCROLL CONTENT -->
 <div class="scroll-content">
 
-  <div class="scroll-ad" onclick="goRedirect()">🔥 Continue Watching<span>Tap here</span></div>
+  <div class="video-ad" onclick="goRedirect()">
+    <img src="https://feelxlinks.b-cdn.net/v1i.png">
+    <div class="play">▶ Watch</div>
+    <div class="label">Trending Clip</div>
+  </div>
 
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-  <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+  <p>Scroll for more videos…</p>
 
-  <div class="scroll-ad" onclick="goRedirect()">💥 Exclusive Offer<span>Click to unlock</span></div>
+  <div class="video-ad" onclick="goRedirect()">
+    <img src="https://picsum.photos/900/500?1">
+    <div class="play">▶ Play</div>
+    <div class="label">Recommended</div>
+  </div>
 
-  <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
-  <p>Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
+  <p>More content loading…</p>
 
-  <div class="scroll-ad" onclick="goRedirect()">🚀 Watch Full Content<span>Tap here</span></div>
+  <div class="video-ad" onclick="goRedirect()">
+    <img src="https://picsum.photos/900/500?2">
+    <div class="play">▶ Continue</div>
+    <div class="label">Watch Next</div>
+  </div>
 
-  <p>Excepteur sint occaecat cupidatat non proident.</p>
-  <p>Sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <p>Almost there…</p>
 
-  <div class="scroll-ad" onclick="goRedirect()">🔥 Limited Access<span>Continue</span></div>
-
-  <p>More content loading...</p>
-  <p>Scroll more for full experience...</p>
-
-  <div class="scroll-ad" onclick="goRedirect()">⚡ Unlock Now<span>Tap to proceed</span></div>
+  <div class="video-ad" onclick="goRedirect()">
+    <img src="https://picsum.photos/900/500?3">
+    <div class="play">▶ Open</div>
+    <div class="label">Popular Video</div>
+  </div>
 
 </div>
 
-<!-- BOTTOM STICKY AD -->
-<div class="ad-bar ad-bottom" onclick="goRedirect()">▶ Sponsored Ad</div>
+<!-- BOTTOM BAR -->
+<div class="ad-bar ad-bottom" onclick="goRedirect()">▶ Continue</div>
 
 <script>
 const params = new URLSearchParams(location.search);
 const vid = params.get("vid");
 
-/* VIDEO MAP */
 const videoMap = {
   v1: "https://feelxlinks.b-cdn.net/v1.mp4"
 };
@@ -120,15 +145,13 @@ const videoMap = {
 const player = document.getElementById("player");
 player.src = videoMap[vid];
 
-/* ===== REDIRECT ===== */
+/* REDIRECT */
 function goRedirect(){
   location.href = "redirect.html";
 }
 
-/* ===== VIDEO END ===== */
+/* VIDEO END / SKIP */
 player.addEventListener("ended", goRedirect);
-
-/* ===== FAST FORWARD / SEEK ===== */
 player.addEventListener("seeking", () => {
   if(player.currentTime > 3){
     goRedirect();
