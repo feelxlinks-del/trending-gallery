@@ -34,97 +34,167 @@ body{margin:0;background:#0f0f0f;color:#fff}
   width:100%;
 }
 
-/* ===== COUNTRY BUTTON ===== */
-.country-btn{
-  display:none;
-  background:#222;
-  color:#fff;
-  border:none;
-  padding:10px 14px;
-  border-radius:8px;
-  font-size:14px;
-  cursor:pointer;
-  margin-bottom:10px;
-}
-
 /* ===== SIDEBAR ===== */
 .sidebar{
   width:180px;
-@@ -105,20 +118,25 @@
+  background:#151515;
+  padding:12px;
+}
+.sidebar h3{margin-top:0}
+.sidebar a{
+  display:block;color:#ccc;text-decoration:none;
+  padding:8px;border-radius:6px;margin-bottom:4px
+}
+.sidebar a:hover{background:#222;color:#fff}
+
+/* ===== CONTENT ===== */
+.content{
+  flex:1;
+  padding:12px;
+}
+
+/* ===== GRIDS ===== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:12px
+}
+.card{
+  background:#1c1c1c;
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer
+}
+.card img{
+  width:100%;
+  height:120px;
+  object-fit:cover
+}
+.card p{margin:8px;font-size:14px}
+
+/* ===== MAIN + SIDE ===== */
+.main-wrap{
+  display:flex;
+  gap:12px;
+}
+.side{
+  width:220px;
+  background:#151515;
+  padding:10px;
+  border-radius:10px
+}
+
+/* ===== PAGINATION ===== */
+.pagination{text-align:center;margin:20px 0}
+.pagination button{
+  margin:4px;padding:6px 10px;
+  border-radius:6px;border:none;cursor:pointer
+}
+
+/* ===== TELEGRAM ===== */
+.telegram{
+  position:fixed;
+  right:15px;
+  bottom:80px;
+  z-index:10001;
+  background:#229ED9;
+  color:#fff;
+  border-radius:50%;
+  width:52px;height:52px;
+  display:flex;align-items:center;justify-content:center;
   font-weight:bold;text-decoration:none;font-size:16px
 }
 
 /* ===== MOBILE FIX ===== */
-/* ===== MOBILE MODE ===== */
 @media(max-width:768px){
 
   .container{
     display:flex;
-    flex-direction:column;
-  }
-
-  .country-btn{
-    display:block;
   }
 
   .sidebar{
     width:110px;
     padding:8px;
-    display:none;
-    width:100%;
-    margin-bottom:12px;
   }
 
   .content{
     padding:8px;
-  .sidebar.show{
-    display:block;
   }
 
   .grid{
-@@ -146,8 +164,8 @@
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+
+  .main-wrap{
+    flex-direction:column;
+  }
+
+  .side{
+    width:100%;
+    margin-top:12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ADS -->
+<div class="ad-bar ad-top" onclick="goRedirect()">▶ PLAY AD</div>
+<div class="ad-bar ad-bottom" onclick="goRedirect()">▶ PLAY AD</div>
 
 <div class="container">
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<!-- DESKTOP SIDEBAR -->
-<div class="sidebar desktop-only">
   <h3>Countries</h3>
   <a href="?country=india">🇮🇳 India</a>
   <a href="?country=usa">🇺🇸 USA</a>
-@@ -158,6 +176,18 @@
+  <a href="?country=japan">🇯🇵 Japan</a>
+  <a href="?country=brazil">🇧🇷 Brazil</a>
+</div>
+
 <!-- CONTENT -->
 <div class="content">
-
-<!-- MOBILE COUNTRY BUTTON -->
-<button class="country-btn" onclick="toggleCountries()">☰ Countries</button>
-
-<!-- MOBILE SIDEBAR -->
-<div class="sidebar" id="countrySidebar">
-  <h3>Countries</h3>
-  <a href="?country=india" onclick="toggleCountries()">🇮🇳 India</a>
-  <a href="?country=usa" onclick="toggleCountries()">🇺🇸 USA</a>
-  <a href="?country=japan" onclick="toggleCountries()">🇯🇵 Japan</a>
-  <a href="?country=brazil" onclick="toggleCountries()">🇧🇷 Brazil</a>
-</div>
 
 <h1 style="color:#ffcc00;margin:0">🔥 Trending Gallery</h1>
 <p style="color:#aaa;margin:5px 0 15px">Most clicked & viral videos right now</p>
 
-@@ -194,52 +224,59 @@
+<div id="topClicks" class="grid" style="margin-bottom:20px"></div>
+
+<div class="main-wrap">
+  <div style="flex:1">
+    <div id="videoGrid" class="grid"></div>
+    <div id="pagination" class="pagination"></div>
+  </div>
+
+  <div class="side">
+    <h3>👀 Top Viewed</h3>
+    <div id="topViewed"></div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- TELEGRAM -->
+<a class="telegram" href="https://t.me/Hotandspicylinks" target="_blank">TG</a>
+
+<script>
+const REDIRECT_LINK="redirect.html";
+const VIDEOS_PER_PAGE=20;
+const MAX_PAGES=10;
+
+const videos=Array.from({length:200},(_,i)=>({
+  title:`Video ${i+1}`,
+  thumb:`https://picsum.photos/300/200?random=${i}`,
+  clicks:Math.floor(Math.random()*1000),
+  views:Math.floor(Math.random()*5000)
 }));
 
 let currentPage=1;
 function goRedirect(){location.href=REDIRECT_LINK}
-
-function goRedirect(){
-  location.href=REDIRECT_LINK;
-}
-
-function toggleCountries(){
-  document.getElementById("countrySidebar").classList.toggle("show");
-}
 
 function render(){
   const tc=document.getElementById('topClicks');
