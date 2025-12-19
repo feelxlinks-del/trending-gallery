@@ -1,5 +1,7 @@
 {
   "rewrites": [
-    { "source": "/trending", "destination": "/" }
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/watch", "destination": "/watch.html" },
+    { "source": "/redirect", "destination": "/redirect.html" }
   ]
 }
