@@ -1,75 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>🔥 Trending Gallery</title>
-<style>
-  /* PREMIUM ANIMATED GRADIENT BACKGROUND */
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(120deg, #ff00c8, #4b0082, #000000);
-    background-size: 400% 400%;
-    animation: gradientMove 12s ease infinite;
-    color: #fff;
-  }
-  @keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  h1 { text-align:center; margin:24px 0; font-size:34px; letter-spacing:1px; text-shadow:0 0 10px #ff008c; }
-  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:20px; padding:18px; max-width:1200px; margin:0 auto 60px; }
-  .card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; overflow:hidden; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.6); transition:transform .28s ease, box-shadow .28s ease; border:1px solid rgba(255,0,128,0.06); }
-  .card:hover { transform: translateY(-8px); box-shadow:0 14px 40px rgba(255,0,128,0.18); }
-  .thumb { width:100%; height:320px; object-fit:cover; display:block; transition: transform .45s ease; }
-  .card:hover .thumb { transform: scale(1.06); }
-  .btn { display:inline-block; width: calc(100% - 32px); margin:14px 16px 22px; padding:12px 10px; background: linear-gradient(90deg,#ff007f,#ff00b3); border-radius:10px; color:#fff; text-decoration:none; font-weight:700; font-size:16px; cursor:pointer; box-shadow:0 6px 18px rgba(255,0,128,0.15); transition: transform .18s ease, box-shadow .18s ease; }
-  .btn:active { transform: translateY(2px); } .btn:hover { box-shadow:0 10px 30px rgba(255,0,128,0.25); transform: scale(1.02); }
-  @media (max-width:480px) { .thumb { height:200px; } h1 { font-size:26px; } }
-  .note { text-align:center; margin-bottom:8px; color:#ffd; font-size:13px; opacity:.9 }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Site Demo</title>
+  <style>
+    *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+    body{margin:0;background:#0f0f0f;color:#fff}
 
-<script>
-/*
- openVideo(videoUrl)
- - opens redirect.html?v=<encoded> in NEW tab (so gallery remains).
- - If you prefer direct link open, change behavior below.
-*/
-function openVideo(videoUrl) {
-  // Use redirect page (in a new tab) for tracking or intermediate landing
-  const url = 'redirect.html?v=' + encodeURIComponent(videoUrl);
-  window.open(url, '_blank', 'noopener,noreferrer');
-}
-</script>
+    /* Top & Bottom Ad Bars */
+    .ad-bar{
+      position:fixed;left:0;right:0;height:50px;z-index:9999;
+      background:linear-gradient(90deg,#ff0066,#ffcc00,#ff0066);
+      display:flex;align-items:center;justify-content:center;
+      animation:scrollGlow 3s linear infinite;
+      cursor:pointer;
+    }
+    .ad-top{top:0}
+    .ad-bottom{bottom:0}
+    @keyframes scrollGlow{
+      0%{filter:brightness(1)}
+      50%{filter:brightness(1.4)}
+      100%{filter:brightness(1)}
+    }
+
+    /* Layout */
+    .container{display:flex;margin-top:60px;margin-bottom:60px}
+    .sidebar{width:220px;background:#151515;padding:15px}
+    .sidebar a{display:block;color:#ccc;text-decoration:none;padding:8px;border-radius:6px}
+    .sidebar a:hover{background:#222;color:#fff}
+
+    .content{flex:1;padding:15px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+    .card{background:#1c1c1c;border-radius:10px;overflow:hidden;cursor:pointer}
+    .card img{width:100%;height:120px;object-fit:cover}
+    .card p{margin:8px;font-size:14px}
+
+    /* Pagination */
+    .pagination{text-align:center;margin:20px 0}
+    .pagination button{margin:4px;padding:6px 10px;border-radius:6px;border:none;cursor:pointer}
+
+    /* Telegram */
+    .telegram{
+      position:fixed;right:15px;bottom:80px;z-index:9999;
+      background:#229ED9;color:#fff;border-radius:50%;width:50px;height:50px;
+      display:flex;align-items:center;justify-content:center;font-weight:bold;
+      text-decoration:none
+    }
+  </style>
 </head>
 <body>
-<h1>🔥 Trending Gallery</h1>
-<p class="note">Click a card — video opens in a new tab (redirect + tracking)</p>
 
-<div class="gallery">
+<!-- Ads -->
+<div class="ad-bar ad-top" onclick="goAd()">▶ PLAY AD</div>
+<div class="ad-bar ad-bottom" onclick="goAd()">▶ PLAY AD</div>
 
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/1P.jpg" alt="thumb1">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/1V.mp4')">Watch Full Video</div>
+<div class="container">
+  <!-- Sidebar Countries -->
+  <div class="sidebar">
+    <h3>Countries</h3>
+    <a href="?country=india">🇮🇳 India</a>
+    <a href="?country=usa">🇺🇸 USA</a>
+    <a href="?country=japan">🇯🇵 Japan</a>
+    <a href="?country=brazil">🇧🇷 Brazil</a>
   </div>
 
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/2P.jpg" alt="thumb2">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/2V.mp4')">Watch Full Video</div>
-  </div>
+  <!-- Content -->
+  <div class="content">
+    <!-- TRENDING GALLERY / TOP CLICKS SECTION -->
+    <h1 style="margin:0 0 5px 0;color:#ffcc00">🔥 Trending Gallery</h1>
+    <p style="margin:0 0 15px 0;color:#aaa;font-size:14px">Most clicked & viral videos right now</p>
+    <div id="topClicks" class="grid" style="margin-bottom:20px"></div>
 
-  <div class="card">
-    <img class="thumb" src="https://feelxlinks.b-cdn.net/3P.jpg" alt="thumb3">
-    <div class="btn" onclick="openVideo('https://feelxlinks.b-cdn.net/3V.mp4')">Watch Full Video</div>
-  </div>
+    <div style="display:flex;gap:15px">
+    <div style="flex:3">
+      <div id="videoGrid" class="grid"></div>
+      
+    </div>
 
-  <!-- add more cards as needed -->
+    <!-- TOP VIEWED SIDE -->
+    <div style="flex:1;background:#151515;padding:10px;border-radius:10px">
+      <h3>👀 Top Viewed</h3>
+      <div id="topViewed"></div>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
 </div>
 
-<!-- Adsterra Social Bar Script (kept as you had it) -->
-<script type="text/javascript" src="//pl28218528.effectivgatecpm.com/77/11/9f/77119f5e4e7d568ca37463d376189f87.js"></script>
+<!-- Telegram -->
+<a class="telegram" href="https://t.me/YOUR_CHANNEL" target="_blank">TG</a>
 
+<script>
+  const REDIRECT_LINK = "https://example.com"; // affiliate / target link
+  const VIDEOS_PER_PAGE = 20;
+  const MAX_PAGES = 10;
+
+  // Dummy video data
+  // Dummy video data with clicks & views
+  const videos = Array.from({length:200},(_,i)=>({
+    title:`Video ${i+1}`,
+    thumb:`https://picsum.photos/300/200?random=${i}`,
+    clicks: Math.floor(Math.random()*1000),
+    views: Math.floor(Math.random()*5000)
+  }));({length:200},(_,i)=>({
+    title:`Video ${i+1}`,
+    thumb:`https://picsum.photos/300/200?random=${i}`
+  }));
+
+  let currentPage = 1;
+
+  function render(){
+    // TOP CLICKS (top 6)
+    const topClicksData = [...videos].sort((a,b)=>b.clicks-a.clicks).slice(0,6);
+    const tc = document.getElementById('topClicks');
+    tc.innerHTML='';
+    topClicksData.forEach(v=>{
+      const c=document.createElement('div');
+      c.className='card';
+      c.onclick=()=>location.href=REDIRECT_LINK;
+      c.innerHTML=`<img src="${v.thumb}"><p>${v.title} 🔥</p>`;
+      tc.appendChild(c);
+    });
+
+    // MAIN GRID
+(){
+    const start = (currentPage-1)*VIDEOS_PER_PAGE;
+    const pageVideos = videos.slice(start,start+VIDEOS_PER_PAGE);
+    const grid = document.getElementById('videoGrid');
+    grid.innerHTML='';
+    pageVideos.forEach(v=>{
+      const card = document.createElement('div');
+      card.className='card';
+      card.onclick=()=>location.href=REDIRECT_LINK;
+      card.innerHTML=`<img src="${v.thumb}"><p>${v.title}</p>`;
+      grid.appendChild(card);
+    });
+
+    // TOP VIEWED (side list)
+    const tv = document.getElementById('topViewed');
+    tv.innerHTML='';
+    [...videos].sort((a,b)=>b.views-a.views).slice(0,8).forEach(v=>{
+      const d=document.createElement('div');
+      d.style.cursor='pointer';
+      d.style.marginBottom='8px';
+      d.onclick=()=>location.href=https://37896.lominglaes.com/4/267540;
+      d.innerHTML=`<small>👀 ${v.views}</small><br>${v.title}`;
+      tv.appendChild(d);
+    });
+
+    const pag = document.getElementById('pagination');
+    pag.innerHTML='';
+    for(let i=1;i<=MAX_PAGES;i++){
+      const b=document.createElement('button');
+      b.textContent=i;
+      b.onclick=()=>{currentPage=i;render()};
+      pag.appendChild(b);
+    }
+  }
+
+  function goAd(){ location.href = https://37896.lominglaes.com/4/267540 }
+
+  render();
+</script>
 </body>
 </html>
