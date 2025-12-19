@@ -3,60 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Video Site Demo</title>
+  <title>Trending Video Gallery</title>
+
   <style>
     *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
     body{margin:0;background:#0f0f0f;color:#fff}
 
-    /* Top & Bottom Ad Bars */
+    /* ===== TOP & BOTTOM ADS ===== */
     .ad-bar{
-      position:fixed;left:0;right:0;height:50px;z-index:9999;
+      position:fixed;left:0;right:0;height:50px;
       background:linear-gradient(90deg,#ff0066,#ffcc00,#ff0066);
       display:flex;align-items:center;justify-content:center;
-      animation:scrollGlow 3s linear infinite;
+      animation:glow 3s linear infinite;
       cursor:pointer;
+      z-index:9000;
+      font-weight:bold;
     }
     .ad-top{top:0}
     .ad-bottom{bottom:0}
-    @keyframes scrollGlow{
+
+    @keyframes glow{
       0%{filter:brightness(1)}
       50%{filter:brightness(1.4)}
       100%{filter:brightness(1)}
     }
 
-    /* Layout */
+    /* ===== LAYOUT ===== */
     .container{display:flex;margin-top:60px;margin-bottom:60px}
-    .sidebar{width:220px;background:#151515;padding:15px}
-    .sidebar a{display:block;color:#ccc;text-decoration:none;padding:8px;border-radius:6px}
+
+    .sidebar{
+      width:220px;background:#151515;padding:15px
+    }
+    .sidebar h3{margin-top:0}
+    .sidebar a{
+      display:block;color:#ccc;text-decoration:none;
+      padding:8px;border-radius:6px;margin-bottom:4px
+    }
     .sidebar a:hover{background:#222;color:#fff}
 
     .content{flex:1;padding:15px}
+
+    /* ===== TRENDING ===== */
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
     .card{background:#1c1c1c;border-radius:10px;overflow:hidden;cursor:pointer}
     .card img{width:100%;height:120px;object-fit:cover}
     .card p{margin:8px;font-size:14px}
 
-    /* Pagination */
-    .pagination{text-align:center;margin:20px 0}
-    .pagination button{margin:4px;padding:6px 10px;border-radius:6px;border:none;cursor:pointer}
+    /* ===== MAIN + SIDE ===== */
+    .main-wrap{display:flex;gap:15px}
 
-    /* Telegram */
+    .side{
+      flex:1;background:#151515;padding:10px;border-radius:10px
+    }
+
+    /* ===== PAGINATION ===== */
+    .pagination{text-align:center;margin:20px 0}
+    .pagination button{
+      margin:4px;padding:6px 10px;border-radius:6px;
+      border:none;cursor:pointer
+    }
+
+    /* ===== TELEGRAM FIXED ===== */
     .telegram{
-      position:fixed;right:15px;bottom:80px;z-index:9999;
-      background:#229ED9;color:#fff;border-radius:50%;width:50px;height:50px;
-      display:flex;align-items:center;justify-content:center;font-weight:bold;
-      text-decoration:none
+      position:fixed;
+      right:15px;
+      bottom:80px;
+      z-index:10001;
+      background:#229ED9;
+      color:#fff;
+      border-radius:50%;
+      width:52px;height:52px;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:bold;
+      text-decoration:none;
+      font-size:16px
     }
   </style>
 </head>
 <body>
 
-<!-- Ads -->
-<div class="ad-bar ad-top" onclick="goAd()">▶ PLAY AD</div>
-<div class="ad-bar ad-bottom" onclick="goAd()">▶ PLAY AD</div>
+<!-- ADS -->
+<div class="ad-bar ad-top" onclick="goRedirect()">▶ PLAY AD</div>
+<div class="ad-bar ad-bottom" onclick="goRedirect()">▶ PLAY AD</div>
 
 <div class="container">
-  <!-- Sidebar Countries -->
+
+  <!-- SIDEBAR -->
   <div class="sidebar">
     <h3>Countries</h3>
     <a href="?country=india">🇮🇳 India</a>
@@ -65,100 +97,96 @@
     <a href="?country=brazil">🇧🇷 Brazil</a>
   </div>
 
-  <!-- Content -->
+  <!-- CONTENT -->
   <div class="content">
-    <!-- TRENDING GALLERY / TOP CLICKS SECTION -->
-    <h1 style="margin:0 0 5px 0;color:#ffcc00">🔥 Trending Gallery</h1>
-    <p style="margin:0 0 15px 0;color:#aaa;font-size:14px">Most clicked & viral videos right now</p>
+
+    <h1 style="color:#ffcc00;margin:0">🔥 Trending Gallery</h1>
+    <p style="color:#aaa;margin:5px 0 15px">Most clicked & viral videos right now</p>
+
     <div id="topClicks" class="grid" style="margin-bottom:20px"></div>
 
-    <div style="display:flex;gap:15px">
-    <div style="flex:3">
-      <div id="videoGrid" class="grid"></div>
-      
+    <div class="main-wrap">
+      <div style="flex:3">
+        <div id="videoGrid" class="grid"></div>
+        <div id="pagination" class="pagination"></div>
+      </div>
+
+      <div class="side">
+        <h3>👀 Top Viewed</h3>
+        <div id="topViewed"></div>
+      </div>
     </div>
 
-    <!-- TOP VIEWED SIDE -->
-    <div style="flex:1;background:#151515;padding:10px;border-radius:10px">
-      <h3>👀 Top Viewed</h3>
-      <div id="topViewed"></div>
-    </div>
-    <div class="pagination" id="pagination"></div>
   </div>
 </div>
 
-<!-- Telegram -->
-<a class="telegram" href=\"https://t.me/Hotandspicylinks\" target="_blank">TG</a>
+<!-- TELEGRAM -->
+<a class="telegram" href="https://t.me/Hotandspicylinks" target="_blank" rel="noopener noreferrer">TG</a>
 
 <script>
-  const REDIRECT_LINK = "https://37896.lominglaes.com/4/267540"; // affiliate / target link
+  const REDIRECT_LINK = "redirect.html";
   const VIDEOS_PER_PAGE = 20;
   const MAX_PAGES = 10;
 
-  // Dummy video data
-  // Dummy video data with clicks & views
-  const videos = Array.from({length:200},(_,i)=>({
-    title:`Video ${i+1}`,
-    thumb:`https://picsum.photos/300/200?random=${i}`,
-    clicks: Math.floor(Math.random()*1000),
-    views: Math.floor(Math.random()*5000)
-  }));({length:200},(_,i)=>({
-    title:`Video ${i+1}`,
-    thumb:`https://picsum.photos/300/200?random=${i}`
-  }));
+  const videos = Array.from({length:200},(_,i)=>(
+    {
+      title:`Video ${i+1}`,
+      thumb:`https://picsum.photos/300/200?random=${i}`,
+      clicks:Math.floor(Math.random()*1000),
+      views:Math.floor(Math.random()*5000)
+    }
+  ));
 
   let currentPage = 1;
 
+  function goRedirect(){ location.href = REDIRECT_LINK }
+
   function render(){
-    // TOP CLICKS (top 6)
-    const topClicksData = [...videos].sort((a,b)=>b.clicks-a.clicks).slice(0,6);
+    /* TOP CLICKS */
     const tc = document.getElementById('topClicks');
     tc.innerHTML='';
-    topClicksData.forEach(v=>{
+    [...videos].sort((a,b)=>b.clicks-a.clicks).slice(0,6).forEach(v=>{
       const c=document.createElement('div');
       c.className='card';
-      c.onclick=()=>location.href=REDIRECT_LINK;
+      c.onclick=goRedirect;
       c.innerHTML=`<img src="${v.thumb}"><p>${v.title} 🔥</p>`;
       tc.appendChild(c);
     });
 
-    // MAIN GRID
-(){
-    const start = (currentPage-1)*VIDEOS_PER_PAGE;
-    const pageVideos = videos.slice(start,start+VIDEOS_PER_PAGE);
-    const grid = document.getElementById('videoGrid');
-    grid.innerHTML='';
-    pageVideos.forEach(v=>{
-      const card = document.createElement('div');
-      card.className='card';
-      card.onclick=()=>location.href=REDIRECT_LINK;
-      card.innerHTML=`<img src="${v.thumb}"><p>${v.title}</p>`;
-      grid.appendChild(card);
+    /* MAIN GRID */
+    const start=(currentPage-1)*VIDEOS_PER_PAGE;
+    const vg=document.getElementById('videoGrid');
+    vg.innerHTML='';
+    videos.slice(start,start+VIDEOS_PER_PAGE).forEach(v=>{
+      const c=document.createElement('div');
+      c.className='card';
+      c.onclick=goRedirect;
+      c.innerHTML=`<img src="${v.thumb}"><p>${v.title}</p>`;
+      vg.appendChild(c);
     });
 
-    // TOP VIEWED (side list)
-    const tv = document.getElementById('topViewed');
+    /* TOP VIEWED */
+    const tv=document.getElementById('topViewed');
     tv.innerHTML='';
     [...videos].sort((a,b)=>b.views-a.views).slice(0,8).forEach(v=>{
       const d=document.createElement('div');
       d.style.cursor='pointer';
       d.style.marginBottom='8px';
-      d.onclick=()=>location.href=REDIRECT_LINK;
+      d.onclick=goRedirect;
       d.innerHTML=`<small>👀 ${v.views}</small><br>${v.title}`;
       tv.appendChild(d);
     });
 
-    const pag = document.getElementById('pagination');
-    pag.innerHTML='';
+    /* PAGINATION */
+    const p=document.getElementById('pagination');
+    p.innerHTML='';
     for(let i=1;i<=MAX_PAGES;i++){
       const b=document.createElement('button');
       b.textContent=i;
       b.onclick=()=>{currentPage=i;render()};
-      pag.appendChild(b);
+      p.appendChild(b);
     }
   }
-
-  function goAd(){ location.href = REDIRECT_LINK }
 
   render();
 </script>
