@@ -9,24 +9,6 @@
 *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 body{margin:0;background:#0f0f0f;color:#fff}
 
-/* ===== UPDATE BANNER ===== */
-#updateBanner{
-  display:none;
-  background:#ff0066;
-  color:#fff;
-  padding:8px;
-  white-space:nowrap;
-  overflow:hidden;
-}
-#bannerText{
-  display:inline-block;
-  animation:scroll 14s linear infinite;
-}
-@keyframes scroll{
-  0%{transform:translateX(100%)}
-  100%{transform:translateX(-100%)}
-}
-
 /* ===== ADS ===== */
 .ad-bar{
   position:fixed;left:0;right:0;height:50px;
@@ -40,7 +22,7 @@ body{margin:0;background:#0f0f0f;color:#fff}
 /* ===== LAYOUT ===== */
 .container{
   display:flex;
-  margin-top:110px;
+  margin-top:60px;
   margin-bottom:60px;
 }
 
@@ -61,15 +43,6 @@ body{margin:0;background:#0f0f0f;color:#fff}
 }
 .sidebar a:hover{background:#222;color:#fff}
 
-.badge{
-  background:red;
-  color:white;
-  font-size:10px;
-  padding:2px 6px;
-  border-radius:6px;
-  margin-left:6px;
-}
-
 /* ===== CONTENT ===== */
 .content{flex:1;padding:12px}
 
@@ -83,12 +56,45 @@ body{margin:0;background:#0f0f0f;color:#fff}
   background:#1c1c1c;
   border-radius:10px;
   overflow:hidden;
-  cursor:pointer;
 }
+
+/* thumbnail */
 .card img{
   width:100%;
   height:120px;
   object-fit:cover;
+}
+
+/* preview video */
+.preview-video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  display:none;
+}
+
+/* show preview on hover */
+.card:hover .preview-video{
+  display:block;
+}
+
+/* watch button */
+.watch-btn{
+  position:absolute;
+  bottom:8px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#ff0066;
+  color:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:bold;
+  cursor:pointer;
+  z-index:5;
 }
 
 /* ===== TOP VIEWED ===== */
@@ -103,7 +109,7 @@ body{margin:0;background:#0f0f0f;color:#fff}
 /* ===== MOBILE ===== */
 @media(max-width:768px){
   .container{flex-direction:column}
-  .sidebar{width:100%;max-height:none}
+  .sidebar{width:100%}
   .grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
@@ -111,12 +117,6 @@ body{margin:0;background:#0f0f0f;color:#fff}
 
 <body>
 
-<!-- UPDATE BANNER -->
-<div id="updateBanner">
-  <div id="bannerText"></div>
-</div>
-
-<!-- ADS -->
 <div class="ad-bar ad-top">▶ PLAY AD</div>
 <div class="ad-bar ad-bottom">▶ PLAY AD</div>
 
@@ -144,10 +144,7 @@ body{margin:0;background:#0f0f0f;color:#fff}
 </div>
 
 <script>
-/* ===== CONFIG ===== */
-const REDIRECT_LINK = "redirect.html";
-
-/* ===== 120 COUNTRIES LIST ===== */
+/* ===== 120 COUNTRIES ===== */
 const countries = [
 "USA","India","China","Japan","UK","Canada","Australia","Germany","France","Italy",
 "Spain","Brazil","Mexico","Argentina","Russia","Ukraine","Poland","Netherlands",
@@ -168,16 +165,16 @@ const countries = [
 /* ===== VIDEOS ===== */
 const videos = [
   {
-    id: "v1",
-    title: "Watch Video",
-    src: "https://feelxlinks.b-cdn.net/v1.mp4",
-    thumb: "https://feelxlinks.b-cdn.net/v1i.png"
+    id:"v1",
+    title:"Watch Video",
+    src:"https://feelxlinks.b-cdn.net/v1.mp4",
+    thumb:"https://feelxlinks.b-cdn.net/v1i.png"
   }
 ];
 
 /* ===== COUNTRIES RENDER ===== */
 function renderCountries(){
-  const list = document.getElementById("countryList");
+  const list=document.getElementById("countryList");
   list.innerHTML="";
   countries.forEach(c=>{
     const a=document.createElement("a");
@@ -191,53 +188,71 @@ function toggleCountries(){
   el.style.display=el.style.display==="none"?"block":"none";
 }
 
-/* ===== VIEW TRACKING (AUTO TOP VIEWED) ===== */
-function addView(videoId){
-  let views = JSON.parse(localStorage.getItem("views")||"{}");
-  views[videoId]=(views[videoId]||0)+1;
-  localStorage.setItem("views",JSON.stringify(views));
+/* ===== VIEW TRACKING ===== */
+function addView(id){
+  let v=JSON.parse(localStorage.getItem("views")||"{}");
+  v[id]=(v[id]||0)+1;
+  localStorage.setItem("views",JSON.stringify(v));
   renderTopViewed();
 }
 
-/* ===== TOP VIEWED RENDER ===== */
+/* ===== TOP VIEWED ===== */
 function renderTopViewed(){
   const list=document.getElementById("topViewedList");
   list.innerHTML="";
-  let views = JSON.parse(localStorage.getItem("views")||"{}");
+  let views=JSON.parse(localStorage.getItem("views")||"{}");
 
-  const sorted=[...videos].sort((a,b)=>
-    (views[b.id]||0)-(views[a.id]||0)
-  );
-
-  sorted.slice(0,5).forEach(v=>{
-    const d=document.createElement("div");
-    d.style.marginBottom="6px";
-    d.innerHTML=`👀 ${(views[v.id]||0)} views - ${v.title}`;
-    list.appendChild(d);
-  });
+  [...videos].sort((a,b)=>(views[b.id]||0)-(views[a.id]||0))
+    .forEach(v=>{
+      const d=document.createElement("div");
+      d.textContent=`👀 ${(views[v.id]||0)} views - ${v.title}`;
+      list.appendChild(d);
+    });
 }
 
 /* ===== VIDEO GRID ===== */
 function renderVideos(){
   const vg=document.getElementById("videoGrid");
   vg.innerHTML="";
+
   videos.forEach(v=>{
     const c=document.createElement("div");
     c.className="card";
-    c.onclick=()=>{
-      addView(v.id);
-      location.href=REDIRECT_LINK;
-    };
+
     c.innerHTML=`
       <div style="position:relative">
         <img src="${v.thumb}">
-        <div style="position:absolute;inset:0;
-          display:flex;align-items:center;justify-content:center;
-          background:rgba(0,0,0,0.4);font-weight:bold">
-          ▶ Watch Video
-        </div>
+        <video class="preview-video" src="${v.src}" muted playsinline></video>
+        <button class="watch-btn">▶ Watch Video</button>
       </div>
     `;
+
+    const preview=c.querySelector(".preview-video");
+    const btn=c.querySelector(".watch-btn");
+
+    // desktop hover preview
+    c.addEventListener("mouseenter",()=>preview.play());
+    c.addEventListener("mouseleave",()=>{
+      preview.pause();preview.currentTime=0;
+    });
+
+    // mobile tap preview
+    c.addEventListener("touchstart",()=>{
+      preview.play();
+      setTimeout(()=>{
+        preview.pause();preview.currentTime=0;
+      },3000);
+    });
+
+    // button = full play + count view
+    btn.addEventListener("click",e=>{
+      e.stopPropagation();
+      preview.muted=false;
+      preview.controls=true;
+      preview.play();
+      addView(v.id);
+    });
+
     vg.appendChild(c);
   });
 }
