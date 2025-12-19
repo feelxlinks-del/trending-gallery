@@ -2,128 +2,221 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Trending Gallery</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🔥 Trending Videos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
   margin:0;
   background:#000;
   color:#fff;
-  font-family:Arial;
-  padding-top:60px;
-  padding-bottom:60px;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
-/* TOP & BOTTOM ADS */
-.ad{
+/* ===== TOP BAR ===== */
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 15px;
+  background:#111;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.logo{
+  font-size:18px;
+  font-weight:bold;
+}
+
+/* ===== COUNTRY MENU ===== */
+.country-wrapper{
+  position:relative;
+}
+
+.country-btn{
+  background:#222;
+  color:#fff;
+  border:1px solid #444;
+  padding:8px 12px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.country-list{
+  display:none;
+  position:absolute;
+  right:0;
+  top:45px;
+  width:230px;
+  max-height:320px;
+  overflow-y:auto;
+  background:#111;
+  border:1px solid #333;
+  border-radius:8px;
+  z-index:2000;
+}
+
+.country-list div{
+  padding:10px;
+  cursor:pointer;
+  border-bottom:1px solid #222;
+}
+
+.country-list div:hover{
+  background:#222;
+}
+
+/* ===== TELEGRAM FLOAT ===== */
+.telegram-float{
   position:fixed;
-  left:0; right:0;
-  height:50px;
+  right:18px;
+  bottom:80px;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background:#229ED9;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:bold;
-  z-index:999;
+  font-size:26px;
+  color:#fff;
+  animation:pulse 1.4s infinite;
+  z-index:3000;
 }
-.top{top:0;background:#ff0055}
-.bottom{bottom:0;background:#0066ff}
 
-/* GRID */
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(34,158,217,0.7);}
+  70%{box-shadow:0 0 0 18px rgba(34,158,217,0);}
+  100%{box-shadow:0 0 0 0 rgba(34,158,217,0);}
+}
+
+/* ===== ADS ===== */
+.top-ad, .bottom-ad{
+  text-align:center;
+  padding:10px;
+  font-weight:bold;
+}
+
+.top-ad{background:#ff004c;}
+.bottom-ad{
+  background:#0066ff;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+}
+
+/* ===== VIDEOS ===== */
 .grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  padding:10px;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:15px;
+  padding:20px;
 }
 
 .card{
   background:#111;
+  border:1px solid #333;
   border-radius:10px;
   overflow:hidden;
   position:relative;
 }
 
-.card img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-}
-
-/* HOVER GIF */
-.card:hover img{
-  content:attr(data-gif);
-}
-
-/* WATCH BUTTON */
-.watch{
-  position:absolute;
-  bottom:8px;
-  left:50%;
-  transform:translateX(-50%);
-  background:red;
-  padding:6px 12px;
-  border-radius:6px;
-  font-size:13px;
-  font-weight:bold;
-}
-
-/* TELEGRAM FLOAT */
-.telegram{
-  position:fixed;
-  right:15px;
-  bottom:80px;
-  width:56px;
-  height:56px;
-  background:#229ED9;
-  border-radius:50%;
+.thumb{
+  height:160px;
+  background:#000;
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 0 15px #229ED9;
-  animation:pulse 1.2s infinite;
-  z-index:999;
-}
-.telegram img{
-  width:30px;
+  font-size:14px;
+  color:#888;
 }
 
-@keyframes pulse{
-  50%{box-shadow:0 0 30px #229ED9}
+.badge{
+  position:absolute;
+  top:8px;
+  left:8px;
+  background:red;
+  padding:3px 6px;
+  font-size:12px;
+  border-radius:4px;
+}
+
+.watch-btn{
+  display:block;
+  background:red;
+  color:#fff;
+  text-align:center;
+  padding:8px;
+  text-decoration:none;
+  font-weight:bold;
 }
 </style>
 </head>
 
 <body>
 
-<div class="ad top">🔥 Sponsored Ad</div>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">🔥 Trending Videos</div>
 
+  <div class="country-wrapper">
+    <button class="country-btn" onclick="toggleCountries()">🌍 Countries</button>
+    <div class="country-list" id="countryList"></div>
+  </div>
+</div>
+
+<div class="top-ad">🔥 Sponsored Ad</div>
+
+<!-- VIDEOS -->
 <div class="grid">
+  <div class="card">
+    <div class="badge">NEW</div>
+    <div class="thumb">Video Thumbnail</div>
+    <a class="watch-btn" href="watch.html">WATCH</a>
+  </div>
 
-<!-- VIDEO 1 -->
-<div class="card" onclick="openVideo('v1')">
-  <img src="thumb1.jpg" data-gif="preview1.gif">
-  <div class="watch">WATCH</div>
+  <div class="card">
+    <div class="badge" style="background:orange">POPULAR</div>
+    <div class="thumb">Video Thumbnail</div>
+    <a class="watch-btn" href="watch.html">WATCH</a>
+  </div>
 </div>
 
-<!-- VIDEO 2 -->
-<div class="card" onclick="openVideo('v2')">
-  <img src="thumb2.jpg" data-gif="preview2.gif">
-  <div class="watch">WATCH</div>
-</div>
-
-</div>
-
-<div class="ad bottom">💰 Scroll Ad</div>
+<div class="bottom-ad">💰 Scroll Ad</div>
 
 <!-- TELEGRAM -->
-<a href="https://t.me/Hotandspicylinks" target="_blank" class="telegram">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg">
-</a>
+<a class="telegram-float" href="https://t.me/Hotandspicylinks" target="_blank">✈️</a>
 
 <script>
-function openVideo(id){
-  window.location.href = "watch.html?vid=" + id;
+const countries = [
+"🇮🇳 India","🇺🇸 USA","🇬🇧 UK","🇨🇦 Canada","🇦🇺 Australia",
+"🇩🇪 Germany","🇫🇷 France","🇮🇹 Italy","🇪🇸 Spain","🇵🇹 Portugal",
+"🇧🇷 Brazil","🇲🇽 Mexico","🇦🇷 Argentina","🇨🇱 Chile","🇨🇴 Colombia",
+"🇿🇦 South Africa","🇳🇬 Nigeria","🇪🇬 Egypt","🇰🇪 Kenya","🇲🇦 Morocco",
+"🇦🇪 UAE","🇸🇦 Saudi Arabia","🇶🇦 Qatar","🇰🇼 Kuwait","🇴🇲 Oman",
+"🇯🇵 Japan","🇰🇷 South Korea","🇨🇳 China","🇹🇭 Thailand","🇵🇭 Philippines",
+"🇮🇩 Indonesia","🇲🇾 Malaysia","🇸🇬 Singapore","🇻🇳 Vietnam",
+"🇷🇺 Russia","🇺🇦 Ukraine","🇵🇱 Poland","🇬🇷 Greece","🇹🇷 Turkey",
+"🇵🇰 Pakistan","🇧🇩 Bangladesh","🇱🇰 Sri Lanka","🇳🇵 Nepal"
+];
+
+const list = document.getElementById("countryList");
+
+countries.forEach(c=>{
+  const d=document.createElement("div");
+  d.textContent=c;
+  d.onclick=()=>{
+    alert("Selected: "+c);
+    list.style.display="none";
+  };
+  list.appendChild(d);
+});
+
+function toggleCountries(){
+  list.style.display = list.style.display==="block" ? "none" : "block";
 }
 </script>
 
