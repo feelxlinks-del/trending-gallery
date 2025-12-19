@@ -1,89 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Trending Video</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>Trending Gallery</title>
 <style>
-body{
-  margin:0;
-  background:#000;
-  color:#fff;
-  font-family:Arial,Helvetica,sans-serif;
-}
-
-video, img{
-  width:100%;
-  max-height:80vh;
-  background:#000;
-}
-
-.section{
-  padding:12px;
-}
-
-.card{
-  margin:15px 0;
-  background:#111;
-  border-radius:10px;
-  overflow:hidden;
-  cursor:pointer;
-}
+body{margin:0;background:#000}
+img{width:100%;display:block}
+.card{margin-bottom:10px}
 </style>
 </head>
-
 <body>
 
-<!-- ===== VIDEO PLAYER ===== -->
-<video id="video" controls playsinline preload="metadata"></video>
-
-<!-- ===== SCROLL ADS ===== -->
-<div class="section">
-  <div class="card" onclick="goRedirect('scroll1')">
-    <img src="ad1.jpg">
+<a href="watch.html">
+  <div class="card">
+    <img src="https://via.placeholder.com/600x350.png?text=Play+Video">
   </div>
-
-  <div class="card" onclick="goRedirect('scroll2')">
-    <img src="ad2.jpg">
-  </div>
-</div>
-
-<script>
-/* ===== GET VIDEO ID ===== */
-const params = new URLSearchParams(window.location.search);
-const vid = params.get("vid") || "v1";
-
-/* ===== FILE PATHS ===== */
-const mp4Path = vid + ".mp4";
-const gifPath = vid + ".gif";
-
-const video = document.getElementById("video");
-
-/* ===== LOAD VIDEO ===== */
-video.innerHTML = `
-  <source src="${mp4Path}" type="video/mp4">
-`;
-
-/* ===== IF VIDEO FAILS → SHOW GIF ===== */
-video.onerror = function(){
-  video.outerHTML = `<img src="${gifPath}" alt="Preview">`;
-};
-
-/* ===== REDIRECT FUNCTION ===== */
-function goRedirect(subid){
-  window.location.href = "redirect.html?subid=" + subid + "&vid=" + vid;
-}
-
-/* ===== FAST FORWARD DETECTION ===== */
-let seekCount = 0;
-video.addEventListener("seeking", function(){
-  seekCount++;
-  if(seekCount >= 3){
-    goRedirect("video_ff");
-  }
-});
-</script>
+</a>
 
 </body>
 </html>
