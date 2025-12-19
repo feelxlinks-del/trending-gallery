@@ -1,67 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Trending Video</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;background:#000;color:#fff;font-family:Arial}
-video{width:100%;max-height:80vh}
-.ad-card{
-  margin:15px;
-  background:#111;
-  padding:10px;
-  border-radius:10px;
+body{
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
 }
-.ad-card img{width:100%;border-radius:8px}
+
+video{
+  width:100%;
+  max-height:80vh;
+  background:#000;
+}
+
+/* Scroll cards */
+.section{
+  padding:12px;
+}
+
+.card{
+  margin:15px 0;
+  background:#111;
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.card img{
+  width:100%;
+  display:block;
+}
 </style>
 </head>
 
 <body>
 
-<video id="vid" controls>
+<!-- ===== VIDEO PLAYER ===== -->
+<video id="video" controls playsinline preload="metadata">
   <source src="video.mp4" type="video/mp4">
+  Your browser does not support video.
 </video>
 
-<!-- SCROLL ADS -->
-<div class="ad-card" onclick="go('scroll1')">
-  <img src="ad1.jpg">
-</div>
+<!-- ===== SCROLL ADS / MORE VIDEOS ===== -->
+<div class="section">
 
-<div class="ad-card" onclick="go('scroll2')">
-  <img src="ad2.jpg">
+  <div class="card" onclick="goRedirect('scroll1')">
+    <img src="ad1.jpg" alt="More video">
+  </div>
+
+  <div class="card" onclick="goRedirect('scroll2')">
+    <img src="ad2.jpg" alt="More video">
+  </div>
+
 </div>
 
 <script>
-let count = 0;
-const offers = [
- "https://offer1.com",
- "https://offer2.com",
- "https://offer3.com"
-];
+/* ===== REDIRECT FUNCTION (ONLY redirect.html) ===== */
+function goRedirect(subid){
+  window.location.href = "redirect.html?subid=" + subid;
+}
 
-const video = document.getElementById("vid");
+/* ===== FAST FORWARD DETECTION ===== */
+let seekCount = 0;
+const video = document.getElementById("video");
 
-video.addEventListener("seeking",()=>{
-  count++;
-  if(count >= 3){
-    redirect("video_ff");
+video.addEventListener("seeking", function(){
+  seekCount++;
+  if(seekCount >= 3){
+    goRedirect("video_ff");
   }
 });
-
-function go(sub){
-  redirect(sub);
-}
-
-function redirect(subid){
-  const link = offers[Math.floor(Math.random()*offers.length)];
-  window.location.href = link + "?subid=" + subid;
-}
 </script>
 
-<!-- Clickaine Popunder -->
+<!-- ===== CLICKAINE POPUNDER (PASTE YOUR SCRIPT BELOW) ===== -->
+<!--
 <script src="CLICKAINE_POP_SCRIPT.js"></script>
+-->
 
 </body>
 </html>
