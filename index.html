@@ -9,158 +9,167 @@
 *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 body{margin:0;background:#0f0f0f;color:#fff}
 
-.header{padding:12px;text-align:center;font-size:20px;font-weight:bold}
+/* ===== ADS ===== */
+.ad-bar{
+  position:fixed;left:0;right:0;height:50px;
+  background:linear-gradient(90deg,#ff0066,#ffcc00,#ff0066);
+  display:flex;align-items:center;justify-content:center;
+  animation:glow 3s linear infinite;
+  cursor:pointer;z-index:9000;font-weight:bold
+}
+.ad-top{top:0}
+.ad-bottom{bottom:0}
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:12px;
-  padding:12px;
+@keyframes glow{
+  0%{filter:brightness(1)}
+  50%{filter:brightness(1.4)}
+  100%{filter:brightness(1)}
 }
 
-.card{
-  position:relative;
-  border-radius:10px;
-  overflow:hidden;
-  background:#000;
-}
-
-.card video{
+/* ===== LAYOUT ===== */
+.container{
+  display:flex;
+  margin-top:60px;
+  margin-bottom:60px;
   width:100%;
-  height:230px;
-  object-fit:cover;
 }
 
-.preview{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.5);
+/* ===== COUNTRY BUTTON ===== */
+.country-btn{
   display:none;
-  align-items:center;
-  justify-content:center;
-  font-size:14px;
-}
-
-.card.active .preview{display:flex}
-
-.player-page{display:none}
-
-.back-btn{
-  padding:10px;
-  background:#ff0066;
-  border:none;
+  background:#222;
   color:#fff;
-  border-radius:6px;
-  margin:10px;
+  border:none;
+  padding:10px 14px;
+  border-radius:8px;
+  font-size:14px;
+  cursor:pointer;
+  margin-bottom:10px;
 }
 
-</style>
-</head>
-<body>
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width:180px;
+@@ -105,20 +118,25 @@
+  font-weight:bold;text-decoration:none;font-size:16px
+}
 
-<div class="header">Trending Video Gallery</div>
+/* ===== MOBILE FIX ===== */
+/* ===== MOBILE MODE ===== */
+@media(max-width:768px){
 
-<!-- GRID PAGE -->
-<div id="gridPage" class="grid"></div>
+  .container{
+    display:flex;
+    flex-direction:column;
+  }
 
-<!-- PLAYER PAGE -->
-<div id="playerPage" class="player-page">
-  <button class="back-btn" onclick="goBack()">⬅ Back</button>
-  <video id="mainVideo" controls autoplay style="width:100%;max-height:60vh"></video>
-  <div class="grid" id="relatedGrid"></div>
+  .country-btn{
+    display:block;
+  }
+
+  .sidebar{
+    width:110px;
+    padding:8px;
+    display:none;
+    width:100%;
+    margin-bottom:12px;
+  }
+
+  .content{
+    padding:8px;
+  .sidebar.show{
+    display:block;
+  }
+
+  .grid{
+@@ -146,8 +164,8 @@
+
+<div class="container">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<!-- DESKTOP SIDEBAR -->
+<div class="sidebar desktop-only">
+  <h3>Countries</h3>
+  <a href="?country=india">🇮🇳 India</a>
+  <a href="?country=usa">🇺🇸 USA</a>
+@@ -158,6 +176,18 @@
+<!-- CONTENT -->
+<div class="content">
+
+<!-- MOBILE COUNTRY BUTTON -->
+<button class="country-btn" onclick="toggleCountries()">☰ Countries</button>
+
+<!-- MOBILE SIDEBAR -->
+<div class="sidebar" id="countrySidebar">
+  <h3>Countries</h3>
+  <a href="?country=india" onclick="toggleCountries()">🇮🇳 India</a>
+  <a href="?country=usa" onclick="toggleCountries()">🇺🇸 USA</a>
+  <a href="?country=japan" onclick="toggleCountries()">🇯🇵 Japan</a>
+  <a href="?country=brazil" onclick="toggleCountries()">🇧🇷 Brazil</a>
 </div>
 
-<script>
-const REDIRECT_URL = "https://37896.lominglaes.com/4/267540";
-const videos = [
-  'https://www.w3schools.com/html/mov_bbb.mp4',
-  'https://www.w3schools.com/html/movie.mp4'
-];
+<h1 style="color:#ffcc00;margin:0">🔥 Trending Gallery</h1>
+<p style="color:#aaa;margin:5px 0 15px">Most clicked & viral videos right now</p>
 
-let redirected = sessionStorage.getItem('redirected');
+@@ -194,52 +224,59 @@
+}));
 
-function redirectNow(){
-  sessionStorage.setItem('redirected','yes');
-  window.location.href = REDIRECT_URL;
+let currentPage=1;
+function goRedirect(){location.href=REDIRECT_LINK}
+
+function goRedirect(){
+  location.href=REDIRECT_LINK;
 }
 
-function createCard(src, index){
-  const card = document.createElement('div');
-  card.className = 'card';
+function toggleCountries(){
+  document.getElementById("countrySidebar").classList.toggle("show");
+}
 
-  const video = document.createElement('video');
-  video.src = src;
-  video.muted = true;
-  video.playsInline = true;
-
-  const preview = document.createElement('div');
-  preview.className = 'preview';
-  preview.innerText = 'Preview';
-
-  let pressTimer;
-
-  /* FIRST CLICK REDIRECT */
-  card.addEventListener('click',()=>{
-    if(!redirected){redirectNow();return;}
-    openPlayer(src);
+function render(){
+  const tc=document.getElementById('topClicks');
+  tc.innerHTML='';
+  [...videos].sort((a,b)=>b.clicks-a.clicks).slice(0,6).forEach(v=>{
+    const c=document.createElement('div');
+    c.className='card';
+    c.onclick=goRedirect;
+    c.innerHTML=`<img src="${v.thumb}"><p>${v.title} 🔥</p>`;
+    tc.appendChild(c);
   });
 
-  /* LONG PRESS = 10s PREVIEW */
-  card.addEventListener('touchstart',()=>{
-    pressTimer = setTimeout(()=>{
-      card.classList.add('active');
-      video.play();
-      setTimeout(()=>video.pause(),10000);
-    },400);
+  const start=(currentPage-1)*VIDEOS_PER_PAGE;
+  const vg=document.getElementById('videoGrid');
+  vg.innerHTML='';
+  videos.slice(start,start+VIDEOS_PER_PAGE).forEach(v=>{
+    const c=document.createElement('div');
+    c.className='card';
+    c.onclick=goRedirect;
+    c.innerHTML=`<img src="${v.thumb}"><p>${v.title}</p>`;
+    vg.appendChild(c);
   });
 
-  card.addEventListener('touchend',()=>{
-    clearTimeout(pressTimer);
-    card.classList.remove('active');
-    video.pause();
-    video.currentTime = 0;
+  const tv=document.getElementById('topViewed');
+  tv.innerHTML='';
+  [...videos].sort((a,b)=>b.views-a.views).slice(0,8).forEach(v=>{
+    const d=document.createElement('div');
+    d.style.marginBottom='8px';
+    d.style.cursor='pointer';
+    d.onclick=goRedirect;
+    d.innerHTML=`<small>👀 ${v.views}</small><br>${v.title}`;
+    tv.appendChild(d);
   });
 
-  card.append(video,preview);
-  return card;
+  const p=document.getElementById('pagination');
+  p.innerHTML='';
+  for(let i=1;i<=MAX_PAGES;i++){
+    const b=document.createElement('button');
+    b.textContent=i;
+    b.onclick=()=>{currentPage=i;render()};
+    p.appendChild(b);
+  }
 }
-
-function loadGrid(){
-  const grid = document.getElementById('gridPage');
-  grid.innerHTML='';
-  videos.forEach((v,i)=>grid.appendChild(createCard(v,i)));
-}
-
-function openPlayer(src){
-  document.getElementById('gridPage').style.display='none';
-  document.getElementById('playerPage').style.display='block';
-  const main = document.getElementById('mainVideo');
-  main.src = src;
-  monitorVideo(main);
-  loadRelated();
-}
-
-function loadRelated(){
-  const rel = document.getElementById('relatedGrid');
-  rel.innerHTML='';
-  videos.forEach(v=>rel.appendChild(createCard(v)));
-}
-
-function goBack(){
-  document.getElementById('playerPage').style.display='none';
-  document.getElementById('gridPage').style.display='grid';
-}
-
-/* FAST FORWARD & SEEK REDIRECT */
-function monitorVideo(video){
-  let seekCount = 0;
-  video.addEventListener('seeking',()=>{
-    seekCount++;
-    if(seekCount>=4) redirectNow();
-  });
-}
-
-loadGrid();
+render();
 </script>
+
 </body>
 </html>
