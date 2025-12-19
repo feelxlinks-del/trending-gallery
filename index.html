@@ -34,6 +34,19 @@ body{margin:0;background:#0f0f0f;color:#fff}
   width:100%;
 }
 
+/* ===== COUNTRY BUTTON ===== */
+.country-btn{
+  display:none;
+  background:#222;
+  color:#fff;
+  border:none;
+  padding:10px 14px;
+  border-radius:8px;
+  font-size:14px;
+  cursor:pointer;
+  margin-bottom:10px;
+}
+
 /* ===== SIDEBAR ===== */
 .sidebar{
   width:180px;
@@ -105,20 +118,25 @@ body{margin:0;background:#0f0f0f;color:#fff}
   font-weight:bold;text-decoration:none;font-size:16px
 }
 
-/* ===== MOBILE FIX ===== */
+/* ===== MOBILE MODE ===== */
 @media(max-width:768px){
 
   .container{
-    display:flex;
+    flex-direction:column;
+  }
+
+  .country-btn{
+    display:block;
   }
 
   .sidebar{
-    width:110px;
-    padding:8px;
+    display:none;
+    width:100%;
+    margin-bottom:12px;
   }
 
-  .content{
-    padding:8px;
+  .sidebar.show{
+    display:block;
   }
 
   .grid{
@@ -146,8 +164,8 @@ body{margin:0;background:#0f0f0f;color:#fff}
 
 <div class="container">
 
-<!-- SIDEBAR -->
-<div class="sidebar">
+<!-- DESKTOP SIDEBAR -->
+<div class="sidebar desktop-only">
   <h3>Countries</h3>
   <a href="?country=india">🇮🇳 India</a>
   <a href="?country=usa">🇺🇸 USA</a>
@@ -157,6 +175,18 @@ body{margin:0;background:#0f0f0f;color:#fff}
 
 <!-- CONTENT -->
 <div class="content">
+
+<!-- MOBILE COUNTRY BUTTON -->
+<button class="country-btn" onclick="toggleCountries()">☰ Countries</button>
+
+<!-- MOBILE SIDEBAR -->
+<div class="sidebar" id="countrySidebar">
+  <h3>Countries</h3>
+  <a href="?country=india" onclick="toggleCountries()">🇮🇳 India</a>
+  <a href="?country=usa" onclick="toggleCountries()">🇺🇸 USA</a>
+  <a href="?country=japan" onclick="toggleCountries()">🇯🇵 Japan</a>
+  <a href="?country=brazil" onclick="toggleCountries()">🇧🇷 Brazil</a>
+</div>
 
 <h1 style="color:#ffcc00;margin:0">🔥 Trending Gallery</h1>
 <p style="color:#aaa;margin:5px 0 15px">Most clicked & viral videos right now</p>
@@ -194,7 +224,14 @@ const videos=Array.from({length:200},(_,i)=>({
 }));
 
 let currentPage=1;
-function goRedirect(){location.href=REDIRECT_LINK}
+
+function goRedirect(){
+  location.href=REDIRECT_LINK;
+}
+
+function toggleCountries(){
+  document.getElementById("countrySidebar").classList.toggle("show");
+}
 
 function render(){
   const tc=document.getElementById('topClicks');
