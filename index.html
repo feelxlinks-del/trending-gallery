@@ -1,51 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trending Video Gallery</title>
 
 <style>
 *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 body{margin:0;background:#0f0f0f;color:#fff}
 
+/* ===== TOP UPDATE BANNER ===== */
+#updateBanner{
+  display:none;
+  background:#ff0066;
+  color:#fff;
+  padding:8px;
+  white-space:nowrap;
+  overflow:hidden;
+}
+#bannerText{
+  display:inline-block;
+  animation:scroll 14s linear infinite;
+}
+@keyframes scroll{
+  0%{transform:translateX(100%)}
+  100%{transform:translateX(-100%)}
+}
+
 /* ===== ADS ===== */
 .ad-bar{
   position:fixed;left:0;right:0;height:50px;
   background:linear-gradient(90deg,#ff0066,#ffcc00,#ff0066);
   display:flex;align-items:center;justify-content:center;
-  animation:glow 3s linear infinite;
   cursor:pointer;z-index:9000;font-weight:bold
 }
 .ad-top{top:0}
 .ad-bottom{bottom:0}
 
-@keyframes glow{
-  0%{filter:brightness(1)}
-  50%{filter:brightness(1.4)}
-  100%{filter:brightness(1)}
-}
-
 /* ===== LAYOUT ===== */
 .container{
   display:flex;
-  margin-top:60px;
+  margin-top:110px;
   margin-bottom:60px;
-  width:100%;
 }
 
 /* ===== SIDEBAR ===== */
 .sidebar{
-  width:180px;
+  width:200px;
   background:#151515;
   padding:12px;
 }
-.sidebar h3{margin-top:0}
 .sidebar a{
-  display:block;color:#ccc;text-decoration:none;
-  padding:8px;border-radius:6px;margin-bottom:4px
+  display:block;
+  color:#ccc;
+  text-decoration:none;
+  padding:8px;
+  border-radius:6px;
 }
 .sidebar a:hover{background:#222;color:#fff}
+
+/* NEW badge */
+.badge{
+  background:red;
+  color:#fff;
+  font-size:10px;
+  padding:2px 6px;
+  border-radius:6px;
+  margin-left:6px;
+}
 
 /* ===== CONTENT ===== */
 .content{flex:1;padding:12px}
@@ -54,13 +76,13 @@ body{margin:0;background:#0f0f0f;color:#fff}
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:12px
+  gap:12px;
 }
 .card{
   background:#1c1c1c;
   border-radius:10px;
   overflow:hidden;
-  cursor:pointer
+  cursor:pointer;
 }
 .card video{
   width:100%;
@@ -80,67 +102,116 @@ body{margin:0;background:#0f0f0f;color:#fff}
 
 <body>
 
-<div class="ad-bar ad-top" onclick="goRedirect()">▶ PLAY AD</div>
-<div class="ad-bar ad-bottom" onclick="goRedirect()">▶ PLAY AD</div>
+<!-- UPDATE BANNER -->
+<div id="updateBanner">
+  <div id="bannerText"></div>
+</div>
+
+<!-- ADS -->
+<div class="ad-bar ad-top">▶ PLAY AD</div>
+<div class="ad-bar ad-bottom">▶ PLAY AD</div>
 
 <div class="container">
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <h3>Explore</h3>
-  <a href="#">🌍 Countries</a>
+  <a href="#" onclick="toggleCountries()">🌍 Countries ▾</a>
+  <div id="countryList" style="display:none"></div>
 </div>
 
 <!-- CONTENT -->
 <div class="content">
+  <h1 style="color:#ffcc00;margin:0">🔥 Trending Gallery</h1>
+  <p style="color:#aaa;margin:5px 0 15px">Worldwide viral videos</p>
 
-<h1 style="color:#ffcc00;margin:0">🔥 Trending Gallery</h1>
-<p style="color:#aaa;margin:5px 0 15px">Most clicked & viral videos</p>
-
-<div id="videoGrid" class="grid"></div>
-
+  <div id="videoGrid" class="grid"></div>
 </div>
+
 </div>
 
 <script>
+/* ===== REDIRECT ===== */
 const REDIRECT_LINK = "redirect.html";
 
-/* ===== VIDEO ADDED HERE ===== */
+/* ===== 120 COUNTRIES DATA (sample subset) ===== */
+const countryData = {
+  usa:   { name:"USA",   lastUpdated:"2025-01-22", hasNew:true },
+  india: { name:"India", lastUpdated:"2025-01-15", hasNew:false },
+  china: { name:"China", lastUpdated:"2025-01-21", hasNew:true },
+  japan: { name:"Japan", lastUpdated:"2025-01-10", hasNew:false }
+  // 👉 ila 120 countries add cheyochu
+};
+
+/* ===== SAMPLE VIDEOS (HOME PAGE) ===== */
 const videos = [
   {
-    title: "🔥 Viral Clip",
-    src: "https://feelxlinks.b-cdn.net/v1.mp4"
+    title:"🔥 Viral Clip",
+    src:"https://feelxlinks.b-cdn.net/v1.mp4"
   }
 ];
 
-function goRedirect(){
-  location.href = REDIRECT_LINK;
+/* ===== RENDER COUNTRIES ===== */
+function renderCountries(){
+  const list = document.getElementById("countryList");
+  list.innerHTML = "";
+
+  Object.keys(countryData).forEach(key=>{
+    const c = countryData[key];
+    const a = document.createElement("a");
+    a.href = `country.html?c=${key}`;
+    a.innerHTML = `🌍 ${c.name} ${c.hasNew ? '<span class=\"badge\">NEW</span>' : ''}`;
+    list.appendChild(a);
+  });
 }
 
-function render(){
+/* ===== TOGGLE ===== */
+function toggleCountries(){
+  const el = document.getElementById("countryList");
+  el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+/* ===== UPDATE BANNER LOGIC ===== */
+function showUpdates(){
+  const lastSeen = localStorage.getItem("lastSeen") || "2025-01-01";
+  const updatedCountries = [];
+
+  Object.values(countryData).forEach(c=>{
+    if(c.lastUpdated > lastSeen){
+      updatedCountries.push(c.name);
+    }
+  });
+
+  if(updatedCountries.length){
+    document.getElementById("bannerText").innerText =
+      "🔥 New videos added in " + updatedCountries.join(" • ");
+    document.getElementById("updateBanner").style.display = "block";
+  }
+
+  localStorage.setItem("lastSeen", new Date().toISOString().split("T")[0]);
+}
+
+/* ===== RENDER VIDEOS ===== */
+function renderVideos(){
   const vg = document.getElementById("videoGrid");
   vg.innerHTML = "";
 
   videos.forEach(v=>{
     const c = document.createElement("div");
     c.className = "card";
-    c.onclick = goRedirect;
+    c.onclick = ()=>location.href = REDIRECT_LINK;
 
     c.innerHTML = `
-      <video 
-        src="${v.src}"
-        muted
-        playsinline
-        preload="metadata">
-      </video>
+      <video src="${v.src}" muted playsinline preload="metadata"></video>
       <p>${v.title}</p>
     `;
-
     vg.appendChild(c);
   });
 }
 
-render();
+/* ===== INIT ===== */
+renderCountries();
+renderVideos();
+showUpdates();
 </script>
 
 </body>
