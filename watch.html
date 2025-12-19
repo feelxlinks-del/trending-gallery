@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watch Video</title>
+
+<style>
+body{
+  margin:0;background:#000;
+  display:flex;align-items:center;justify-content:center;
+  height:100vh
+}
+video{width:100%;max-width:900px}
+</style>
+</head>
+
+<body>
+
+<video id="player" controls autoplay></video>
+
+<script>
+const params=new URLSearchParams(location.search);
+const vid=params.get("vid");
+
+const videoMap={
+  v1:"https://feelxlinks.b-cdn.net/v1.mp4"
+};
+
+const player=document.getElementById("player");
+player.src=videoMap[vid];
+
+const ALLOW_TIME=3;
+let redirected=false;
+
+function goRedirect(){
+  if(redirected) return;
+  redirected=true;
+  location.href="redirect.html";
+}
+
+/* END */
+player.addEventListener("ended",goRedirect);
+
+/* SEEK / FAST FORWARD */
+player.addEventListener("seeking",()=>{
+  if(player.currentTime>ALLOW_TIME){
+    goRedirect();
+  }
+});
+
+/* EXTRA SAFETY */
+player.addEventListener("timeupdate",()=>{
+  if(player.currentTime>ALLOW_TIME*2){
+    goRedirect();
+  }
+});
+</script>
+
+</body>
+</html>
