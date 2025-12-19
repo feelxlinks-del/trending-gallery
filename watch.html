@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,51 +7,130 @@
 
 <style>
 body{
-  margin:0;background:#000;
-  display:flex;align-items:center;justify-content:center;
-  height:100vh
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
 }
-video{width:100%;max-width:900px}
+
+/* ===== STICKY ADS ===== */
+.ad-bar{
+  position:fixed;
+  left:0;
+  right:0;
+  height:60px;
+  background:linear-gradient(90deg,#ff0066,#ffcc00,#ff0066);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  z-index:999;
+  cursor:pointer;
+}
+.ad-top{top:0}
+.ad-bottom{bottom:0}
+
+/* ===== VIDEO ===== */
+.video-container{
+  padding-top:70px;
+  padding-bottom:90px;
+  display:flex;
+  justify-content:center;
+}
+video{
+  width:100%;
+  max-width:900px;
+}
+
+/* ===== SCROLL CONTENT ===== */
+.scroll-content{
+  padding:20px;
+  max-width:900px;
+  margin:auto;
+}
+
+/* ===== SCROLL ADS ===== */
+.scroll-ad{
+  margin:60px 0;
+  padding:20px;
+  background:#151515;
+  border-radius:10px;
+  text-align:center;
+  cursor:pointer;
+  font-weight:bold;
+}
+.scroll-ad span{
+  display:block;
+  margin-top:8px;
+  font-size:13px;
+  color:#aaa;
+}
 </style>
 </head>
 
 <body>
 
-<video id="player" controls autoplay></video>
+<!-- TOP STICKY AD -->
+<div class="ad-bar ad-top" onclick="goRedirect()">▶ Sponsored Ad</div>
+
+<!-- VIDEO -->
+<div class="video-container">
+  <video id="player" controls autoplay playsinline></video>
+</div>
+
+<!-- SCROLLABLE CONTENT WITH ADS -->
+<div class="scroll-content">
+
+  <div class="scroll-ad" onclick="goRedirect()">🔥 Continue Watching<span>Tap here</span></div>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+  <div class="scroll-ad" onclick="goRedirect()">💥 Exclusive Offer<span>Click to unlock</span></div>
+
+  <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+  <p>Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
+
+  <div class="scroll-ad" onclick="goRedirect()">🚀 Watch Full Content<span>Tap here</span></div>
+
+  <p>Excepteur sint occaecat cupidatat non proident.</p>
+  <p>Sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+  <div class="scroll-ad" onclick="goRedirect()">🔥 Limited Access<span>Continue</span></div>
+
+  <p>More content loading...</p>
+  <p>Scroll more for full experience...</p>
+
+  <div class="scroll-ad" onclick="goRedirect()">⚡ Unlock Now<span>Tap to proceed</span></div>
+
+</div>
+
+<!-- BOTTOM STICKY AD -->
+<div class="ad-bar ad-bottom" onclick="goRedirect()">▶ Sponsored Ad</div>
 
 <script>
-const params=new URLSearchParams(location.search);
-const vid=params.get("vid");
+const params = new URLSearchParams(location.search);
+const vid = params.get("vid");
 
-const videoMap={
-  v1:"https://feelxlinks.b-cdn.net/v1.mp4"
+/* VIDEO MAP */
+const videoMap = {
+  v1: "https://feelxlinks.b-cdn.net/v1.mp4"
 };
 
-const player=document.getElementById("player");
-player.src=videoMap[vid];
+const player = document.getElementById("player");
+player.src = videoMap[vid];
 
-const ALLOW_TIME=3;
-let redirected=false;
-
+/* ===== REDIRECT ===== */
 function goRedirect(){
-  if(redirected) return;
-  redirected=true;
-  location.href="redirect.html";
+  location.href = "redirect.html";
 }
 
-/* END */
-player.addEventListener("ended",goRedirect);
+/* ===== VIDEO END ===== */
+player.addEventListener("ended", goRedirect);
 
-/* SEEK / FAST FORWARD */
-player.addEventListener("seeking",()=>{
-  if(player.currentTime>ALLOW_TIME){
-    goRedirect();
-  }
-});
-
-/* EXTRA SAFETY */
-player.addEventListener("timeupdate",()=>{
-  if(player.currentTime>ALLOW_TIME*2){
+/* ===== FAST FORWARD / SEEK ===== */
+player.addEventListener("seeking", () => {
+  if(player.currentTime > 3){
     goRedirect();
   }
 });
