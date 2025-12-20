@@ -66,14 +66,18 @@ header{
 @keyframes blinkOrange{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
 @keyframes blinkPurple{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
 
-/* THUMB PREVIEW */
+/* VIDEO PREVIEW (GIF STYLE) */
 .thumb-wrap{position:relative;cursor:pointer}
-.thumb-img,.thumb-gif{
+.thumb-img{
   width:100%;height:190px;object-fit:cover;display:block
 }
-.thumb-gif{display:none}
+.preview-video{
+  display:none;
+  width:100%;height:190px;
+  object-fit:cover
+}
 .thumb-wrap:hover .thumb-img{display:none}
-.thumb-wrap:hover .thumb-gif{display:block}
+.thumb-wrap:hover .preview-video{display:block}
 
 /* PLAY ICON */
 .play-icon{
@@ -153,8 +157,8 @@ function toggleCountries(){
   c.style.display=c.style.display==='block'?'none':'block';
 }
 
-/* BASE VIDEOS (YOUR 25 VIDEOS INTACT) */
-const baseVideos=[
+/* BASE VIDEOS – SAME 25 */
+const baseVideos = [
  {video:"https://feelxlinks.b-cdn.net/v1.mp4",img:"https://feelxlinks.b-cdn.net/v1i.png",badge:"NEW"},
  {video:"https://feelxlinks.b-cdn.net/v2.mp4",img:"https://feelxlinks.b-cdn.net/v2i.png",badge:"POPULAR"},
  {video:"https://feelxlinks.b-cdn.net/v3.mp4",img:"https://feelxlinks.b-cdn.net/v3i.png",badge:"HOT"},
@@ -179,7 +183,7 @@ const baseVideos=[
  {video:"https://feelxlinks.b-cdn.net/v22.mp4",img:"https://feelxlinks.b-cdn.net/v22i.png",badge:"NEW"},
  {video:"https://feelxlinks.b-cdn.net/v23.mp4",img:"https://feelxlinks.b-cdn.net/v23i.png",badge:"HOT"},
  {video:"https://feelxlinks.b-cdn.net/v24.mp4",img:"https://feelxlinks.b-cdn.net/v24i.png",badge:"TRENDING"},
- {video:"https://feelxlinks.b-cdn.net/v25.mp4",img:"https://feelxlinks.b-cdn.net/v25i.png",badge:"POPULAR"},
+ {video:"https://feelxlinks.b-cdn.net/v25.mp4",img:"https://feelxlinks.b-cdn.net/v25i.png",badge:"POPULAR"}
 ];
 
 let videos=[];
@@ -201,7 +205,7 @@ function renderPage(p){
 
       <div class="thumb-wrap" onclick="location.href='redirect.html'">
         <img src="${v.img}" class="thumb-img">
-        <img src="preview.gif" class="thumb-gif">
+        <video class="preview-video" src="${v.video}" muted loop playsinline></video>
         <img src="play.png" class="play-icon">
       </div>
 
@@ -229,6 +233,9 @@ function renderPager(){
 
 renderPage(currentPage);
 renderPager();
+
+/* MOBILE AUTOPLAY SUPPORT */
+document.addEventListener("touchstart",()=>{},true);
 </script>
 
 </body>
