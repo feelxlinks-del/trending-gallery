@@ -66,16 +66,19 @@ header{
 @keyframes blinkOrange{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
 @keyframes blinkPurple{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
 
-/* VIDEO PREVIEW (GIF STYLE) */
-.thumb-wrap{position:relative;cursor:pointer}
+/* VIDEO PREVIEW (NO WHITE BG) */
+.thumb-wrap{position:relative;cursor:pointer;background:#000}
 .thumb-img{
   width:100%;height:190px;object-fit:cover;display:block
 }
 .preview-video{
   display:none;
   width:100%;height:190px;
-  object-fit:cover
+  object-fit:cover;
+  background:#000;        /* 🔥 WHITE FIX */
 }
+
+/* hover */
 .thumb-wrap:hover .thumb-img{display:none}
 .thumb-wrap:hover .preview-video{display:block}
 
@@ -157,8 +160,8 @@ function toggleCountries(){
   c.style.display=c.style.display==='block'?'none':'block';
 }
 
-/* BASE VIDEOS – SAME 25 */
-const baseVideos = [
+/* BASE VIDEOS */
+const baseVideos=[
  {video:"https://feelxlinks.b-cdn.net/v1.mp4",img:"https://feelxlinks.b-cdn.net/v1i.png",badge:"NEW"},
  {video:"https://feelxlinks.b-cdn.net/v2.mp4",img:"https://feelxlinks.b-cdn.net/v2i.png",badge:"POPULAR"},
  {video:"https://feelxlinks.b-cdn.net/v3.mp4",img:"https://feelxlinks.b-cdn.net/v3i.png",badge:"HOT"},
@@ -205,13 +208,25 @@ function renderPage(p){
 
       <div class="thumb-wrap" onclick="location.href='redirect.html'">
         <img src="${v.img}" class="thumb-img">
-        <video class="preview-video" src="${v.video}" muted loop playsinline></video>
+        <video class="preview-video"
+          src="${v.video}"
+          muted loop playsinline
+          preload="metadata"
+          poster="${v.img}">
+        </video>
         <img src="play.png" class="play-icon">
       </div>
 
       <div class="watch" onclick="playVideo('${v.video}')">WATCH</div>
     `;
     grid.appendChild(card);
+  });
+
+  /* 🔥 AUTO PLAY ON HOVER */
+  document.querySelectorAll(".thumb-wrap").forEach(w=>{
+    const v=w.querySelector("video");
+    w.onmouseenter=()=>{v.play()};
+    w.onmouseleave=()=>{v.pause();v.currentTime=0};
   });
 }
 
