@@ -84,10 +84,17 @@ header{
 
 /* PLAY ICON */
 .play-icon{
-  position:absolute;top:50%;left:50%;
+  position:absolute;
+  top:50%;
+  left:50%;
   transform:translate(-50%,-50%);
-  width:52px;height:52px;
-  pointer-events:none
+  width:0;
+  height:0;
+  border-top:16px solid transparent;
+  border-bottom:16px solid transparent;
+  border-left:26px solid rgba(255,255,255,0.9);
+  pointer-events:none;
+  filter:drop-shadow(0 0 6px rgba(0,0,0,.6));
 }
 
 /* WATCH */
@@ -214,7 +221,7 @@ function renderPage(p){
           preload="metadata"
           poster="${v.img}">
         </video>
-        <img src="play.png" class="play-icon">
+        <div class="play-icon"></div>
       </div>
 
       <div class="watch" onclick="playVideo('${v.video}')">WATCH</div>
