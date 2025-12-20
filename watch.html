@@ -64,15 +64,20 @@ video{width:100%;max-width:720px;border-radius:12px;background:#000}
   <div class="country-wrap">
     <div class="country-btn" onclick="toggleCountries()">🌍 Countries</div>
     <div class="country-list" id="countries">
-      <div>🇮🇳 India</div><div>🇺🇸 United States</div>
-      <div>🇬🇧 United Kingdom</div><div>🇨🇦 Canada</div>
+      <div>🇮🇳 India</div>
+      <div>🇺🇸 United States</div>
+      <div>🇬🇧 United Kingdom</div>
+      <div>🇨🇦 Canada</div>
       <div>🇦🇺 Australia</div>
     </div>
   </div>
 </header>
 
 <div class="video-wrap">
-  <video controls autoplay muted>
+  <!-- 🔒 DOWNLOAD DISABLED HERE -->
+  <video controls autoplay muted
+         controlsList="nodownload noplaybackrate"
+         disablePictureInPicture>
     <source id="videoSrc" src="">
   </video>
 </div>
@@ -82,15 +87,34 @@ video{width:100%;max-width:720px;border-radius:12px;background:#000}
 </div>
 
 <script>
+/* COUNTRY */
 function toggleCountries(){
   const c=document.getElementById('countries');
   c.style.display=c.style.display==='block'?'none':'block';
 }
 document.addEventListener('click',e=>{
   const wrap=document.querySelector('.country-wrap');
-  if(!wrap.contains(e.target)) document.getElementById('countries').style.display='none';
+  if(!wrap.contains(e.target)){
+    document.getElementById('countries').style.display='none';
+  }
 });
+
+/* LOAD VIDEO */
 document.getElementById("videoSrc").src = localStorage.getItem("currentVideo");
+
+/* 🔒 RIGHT CLICK DOWNLOAD BLOCK */
+const videoEl = document.querySelector("video");
+videoEl.addEventListener("contextmenu", e => e.preventDefault());
+
+/* 🔒 KEYBOARD SHORTCUT BLOCK (Ctrl+S, Ctrl+U, F12) */
+document.addEventListener("keydown", function(e){
+  if (
+    (e.ctrlKey && ["s","u","p"].includes(e.key.toLowerCase())) ||
+    e.key === "F12"
+  ) {
+    e.preventDefault();
+  }
+});
 </script>
 
 </body>
