@@ -156,12 +156,6 @@ function toggleCountries(){
   c.style.display=c.style.display==='block'?'none':'block';
 }
 
-/* 🔥 ADD THIS BELOW */
-function setCountry(code){
-  localStorage.setItem("selectedCountry", code);
-  location.reload();
-}
-
 /* ========= BASE VIDEOS (ONLY id + uploadedAt ADDED) ========= */
 const baseVideos=[
  {id:1,video:"https://feelxlinks.b-cdn.net/v1.mp4",img:"https://feelxlinks.b-cdn.net/v1i.png",badge:"NEW",uploadedAt:1},
