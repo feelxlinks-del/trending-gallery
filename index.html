@@ -12,11 +12,8 @@ body{margin:0;background:#000;color:#fff}
 /* HEADER */
 header{
   position:sticky;top:0;z-index:100;
-  background:#000;
-  padding:12px 15px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  background:#000;padding:12px 15px;
+  display:flex;align-items:center;justify-content:space-between;
   border-bottom:1px solid #222
 }
 .top-brand{display:flex;align-items:center;gap:10px}
@@ -51,21 +48,59 @@ header{
   gap:14px;padding:14px;margin-bottom:140px
 }
 .card{background:#111;border-radius:12px;overflow:hidden;position:relative;cursor:pointer}
-.badge{position:absolute;top:8px;left:8px;background:red;font-size:11px;padding:4px 7px;border-radius:5px}
-.badge.pop{background:orange}
+
+/* BADGE BASE */
+.badge{
+  position:absolute;top:8px;left:8px;
+  background:red;font-size:11px;
+  padding:4px 7px;border-radius:5px;
+  font-weight:bold;
+}
+
+/* 🔥 BLINK + GLOW (FINAL) */
+.badge.new{ animation: blinkGreen 1.2s infinite; }
+.badge.hot{ animation: blinkRed 1.2s infinite; }
+.badge.popular{ animation: blinkOrange 1.2s infinite; }
+.badge.trending{ animation: blinkPurple 1.2s infinite; }
+
+@keyframes blinkGreen{
+  0%{opacity:1;box-shadow:0 0 5px #00ff66}
+  50%{opacity:.4;box-shadow:0 0 15px #00ff66}
+  100%{opacity:1;box-shadow:0 0 5px #00ff66}
+}
+@keyframes blinkRed{
+  0%{opacity:1;box-shadow:0 0 5px #ff0033}
+  50%{opacity:.4;box-shadow:0 0 15px #ff0033}
+  100%{opacity:1;box-shadow:0 0 5px #ff0033}
+}
+@keyframes blinkOrange{
+  0%{opacity:1;box-shadow:0 0 5px orange}
+  50%{opacity:.4;box-shadow:0 0 15px orange}
+  100%{opacity:1;box-shadow:0 0 5px orange}
+}
+@keyframes blinkPurple{
+  0%{opacity:1;box-shadow:0 0 5px #9b00ff}
+  50%{opacity:.4;box-shadow:0 0 15px #9b00ff}
+  100%{opacity:1;box-shadow:0 0 5px #9b00ff}
+}
+
+/* THUMB */
 .thumb{
   width:100%;height:190px;background-size:cover;background-position:center;
   transition:transform .35s
 }
 .card:hover .thumb{transform:scale(1.08)}
-.watch{background:#e50914;color:#fff;text-align:center;padding:12px;font-weight:bold;font-size:14px}
 
+.watch{
+  background:#e50914;color:#fff;
+  text-align:center;padding:12px;font-weight:bold;font-size:14px
+}
+
+/* PAGINATION */
 .pagination{
-  position:relative;        /* ❗ fixed remove */
-  display:flex;
-  justify-content:center;
-  gap:6px;
-  margin:20px 0 120px;      /* bottom space telegram kosam */
+  position:relative;
+  display:flex;justify-content:center;gap:6px;
+  margin:20px 0 120px
 }
 .pagination button{
   background:#111;border:1px solid #333;color:#fff;
@@ -117,14 +152,13 @@ header{
 </div>
 
 <script>
-/* COUNTRY */
 function toggleCountries(){
   const c=document.getElementById('countries');
   c.style.display=c.style.display==='block'?'none':'block';
 }
 document.addEventListener('click',e=>{
   const wrap=document.querySelector('.country-wrap');
-  if(!wrap.contains(e.target)) document.getElementById('countries').style.display='none';
+  if(!wrap.contains(e.target)) countries.style.display='none';
 });
 
 /* BASE VIDEOS */
@@ -140,27 +174,27 @@ const baseVideos=[
  {video:"https://feelxlinks.b-cdn.net/v9.mp4",img:"https://feelxlinks.b-cdn.net/v9i.png",badge:"POPULAR"},
  {video:"https://feelxlinks.b-cdn.net/v10.mp4",img:"https://feelxlinks.b-cdn.net/v10i.png",badge:"HOT"},
  {video:"https://feelxlinks.b-cdn.net/v11.mp4",img:"https://feelxlinks.b-cdn.net/v11i.png",badge:"TRENDING"},
- {video:"https://feelxlinks.b-cdn.net/v12.mp4",img:"https://feelxlinks.b-cdn.net/v12i.png",badge:"NEW"},
+ {video:"https://feelxlinks.b-cdn.net/v12.mp4",img:"https://feelxlinks.b-cdn.net/v12i.png",badge:"NEW"}
 ];
 
-/* BUILD 200 (demo) */
+/* BUILD 200 */
 let videos=[]; for(let i=0;i<40;i++) videos.push(...baseVideos);
 
 /* PAGINATION */
-const PER_PAGE=20, TOTAL_PAGES=10;
+const PER_PAGE=20,TOTAL_PAGES=10;
 let currentPage=Number(localStorage.getItem("page"))||1;
 const grid=document.getElementById("videoGrid");
 const pager=document.getElementById("pagination");
 
 function renderPage(p){
   grid.innerHTML="";
-  const s=(p-1)*PER_PAGE, e=s+PER_PAGE;
+  const s=(p-1)*PER_PAGE,e=s+PER_PAGE;
   videos.slice(s,e).forEach(v=>{
     const card=document.createElement("div");
     card.className="card";
-    card.onclick=()=>{localStorage.setItem("currentVideo",v.video);location.href="watch.html";};
+    card.onclick=()=>{localStorage.setItem("currentVideo",v.video);location.href="watch.html"};
     card.innerHTML=`
-      <div class="badge ${v.badge==='POPULAR'?'pop':''}">${v.badge}</div>
+      <div class="badge ${v.badge.toLowerCase()}">${v.badge}</div>
       <div class="thumb" style="background-image:url('${v.img}')"></div>
       <div class="watch">WATCH</div>`;
     grid.appendChild(card);
@@ -170,12 +204,12 @@ function renderPager(){
   pager.innerHTML="";
   for(let i=1;i<=TOTAL_PAGES;i++){
     const b=document.createElement("button");
-    b.textContent=i; if(i===currentPage) b.classList.add("active");
-    b.onclick=()=>{currentPage=i;localStorage.setItem("page",i);renderPage(i);renderPager();};
+    b.textContent=i;if(i===currentPage)b.classList.add("active");
+    b.onclick=()=>{currentPage=i;localStorage.setItem("page",i);renderPage(i);renderPager()};
     pager.appendChild(b);
   }
 }
-renderPage(currentPage); renderPager();
+renderPage(currentPage);renderPager();
 </script>
 </body>
 </html>
