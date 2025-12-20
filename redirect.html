@@ -6,28 +6,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script>
-/* ===== ALL REDIRECT LINKS ===== */
+/* ===== ALL OFFERS ===== */
 var offers = [
   "https://37896.lominglaes.com/4/267540",
-
   "https://www.effectivegatecpm.com/r3gjuqky?key=1db5f3263e99c630475f63baabf93f34",
-  "https://www.effectivegatecpm.com/e380i6ia?key=69ca9ea1b45dff3abbd917c05305f100",
-  "https://www.effectivegatecpm.com/vmdzkn8h?key=425835982bb6bb0ac9f7fc99a5d31adc",
   "https://www.effectivegatecpm.com/g66urzzth5?key=b0e76c3a5158a5e52c28a4e257d6dfb9",
-  "https://www.effectivegatecpm.com/hawvk1y5s?key=691c6ffac5183bf1ce8476b3ed129679",
   "https://www.effectivegatecpm.com/eksa3545n?key=09fdb5f17c08e7964e49a8d51ee2c6b2",
   "https://www.effectivegatecpm.com/v4is1un4ei?key=f3a17476865bab3cfe5f91d03920f9ee",
-  "https://www.effectivegatecpm.com/dyggh7d9s?key=a43c981f3f5375f62fae92a7b5da07f9"
+  "https://www.effectivegatecpm.com/dyggh7d9s?key=a43c981f3f5375f62fae92a7b5da07f9",
+  "https://www.effectivegatecpm.com/e380i6ia?key=69ca9ea1b45dff3abbd917c05305f100",
+  "https://www.effectivegatecpm.com/vmdzkn8h?key=425835982bb6bb0ac9f7fc99a5d31adc",
+  "https://www.effectivegatecpm.com/hawvk1y5s?key=691c6ffac5183bf1ce8476b3ed129679",
+  "https://www.effectivegatecpm.com/gatuzatq8?key=0c655144c8acd834daca5e7ebc2afe4a",
+  "https://www.effectivegatecpm.com/kwv82bt6hr?key=51991b7539ea47aae1494c656411feb6",
+  "https://www.effectivegatecpm.com/ive9x5sb?key=f1f7d80081801dcfaa4aa929a2df4afd"
 ];
 
 /* ===== SUBID ===== */
 var params = new URLSearchParams(window.location.search);
 var subid = params.get("subid") || "default";
 
-/* ===== PICK RANDOM ===== */
-var finalLink = offers[Math.floor(Math.random() * offers.length)];
+/* ===== AVOID SAME LINK TWICE ===== */
+var lastOffer = localStorage.getItem("lastOffer");
 
-/* ===== SAFE APPEND ===== */
+/* Filter last used */
+var filtered = offers.filter(o => o !== lastOffer);
+
+/* If all used (rare), reset */
+if(filtered.length === 0){
+  filtered = offers;
+}
+
+/* Pick random */
+var finalLink = filtered[Math.floor(Math.random() * filtered.length)];
+
+/* Save current as last */
+localStorage.setItem("lastOffer", finalLink);
+
+/* Append subid safely */
 if(finalLink.includes("?")){
   window.location.href = finalLink + "&subid=" + subid;
 }else{
