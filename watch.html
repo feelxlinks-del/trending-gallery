@@ -38,7 +38,7 @@ header{
   padding:20px;
   display:flex;
   justify-content:center;
-  position:relative; /* 🔥 NEW (for play-ad strip) */
+  position:relative;
 }
 video{
   width:100%;
@@ -47,16 +47,16 @@ video{
   background:#000
 }
 
-/* 🔥 NEW : PLAY AD STRIP */
-.play-ad{
+/* 🔥 TAP TO UNLOCK STRIP */
+.unlock-strip{
   position:absolute;
   bottom:20px;
   left:50%;
   transform:translateX(-50%);
   width:calc(100% - 40px);
   max-width:720px;
-  height:46px;
-  background:linear-gradient(90deg,#ff0055,#ffcc00);
+  height:48px;
+  background:linear-gradient(90deg,#ff0066,#ffcc00);
   color:#000;
   font-weight:bold;
   display:none;
@@ -64,13 +64,13 @@ video{
   justify-content:center;
   border-radius:0 0 12px 12px;
   cursor:pointer;
-  animation:pulseAd 1.2s infinite;
+  animation:pulseAd 1.1s infinite;
 }
 
 @keyframes pulseAd{
-  0%{opacity:.75}
+  0%{opacity:.7}
   50%{opacity:1}
-  100%{opacity:.75}
+  100%{opacity:.7}
 }
 
 /* TELEGRAM */
@@ -110,16 +110,14 @@ video{
 </header>
 
 <div class="video-wrap">
-  <!-- 🔒 DOWNLOAD DISABLED HERE -->
   <video id="mainVideo" controls autoplay muted
-         controlsList="nodownload noplaybackrate"
-         disablePictureInPicture>
+    controlsList="nodownload noplaybackrate"
+    disablePictureInPicture>
     <source id="videoSrc" src="">
   </video>
 
-  <!-- 🔥 NEW : PLAY AD STRIP -->
-  <div class="play-ad" id="playAd">
-    ▶ Play Ad
+  <div class="unlock-strip" id="unlockStrip">
+    🔓 Tap to Unlock
   </div>
 </div>
 
@@ -143,34 +141,59 @@ document.addEventListener('click',e=>{
 /* LOAD VIDEO */
 document.getElementById("videoSrc").src = localStorage.getItem("currentVideo");
 
-/* 🔒 RIGHT CLICK DOWNLOAD BLOCK */
-const videoEl = document.querySelector("video");
-videoEl.addEventListener("contextmenu", e => e.preventDefault());
+/* BLOCK DOWNLOAD */
+const videoEl=document.getElementById("mainVideo");
+videoEl.addEventListener("contextmenu",e=>e.preventDefault());
 
-/* 🔒 KEYBOARD SHORTCUT BLOCK */
-document.addEventListener("keydown", function(e){
-  if (
-    (e.ctrlKey && ["s","u","p"].includes(e.key.toLowerCase())) ||
-    e.key === "F12"
-  ) {
-    e.preventDefault();
-  }
-});
+/* 🔥 SAVED AD LINKS ROTATION */
+const adLinks=[
+  "https://37896.lominglaes.com/4/267540",
+  "https://www.effectivegatecpm.com/r3gjuqky?key=1db5f3263e99c630475f63baabf93f34",
+  "https://www.effectivegatecpm.com/g66urzzth5?key=b0e76c3a5158a5e52c28a4e257d6dfb9",
+  "https://www.effectivegatecpm.com/eksa3545n?key=09fdb5f17c08e7964e49a8d51ee2c6b2",
+  "https://www.effectivegatecpm.com/v4is1un4ei?key=f3a17476865bab3cfe5f91d03920f9ee",
+  "https://www.effectivegatecpm.com/dyggh7d9s?key=a43c981f3f5375f62fae92a7b5da07f9",
+  "https://www.effectivegatecpm.com/e380i6ia?key=69ca9ea1b45dff3abbd917c05305f100",
+  "https://www.effectivegatecpm.com/vmdzkn8h?key=425835982bb6bb0ac9f7fc99a5d31adc",
+  "https://www.effectivegatecpm.com/hawvk1y5s?key=691c6ffac5183bf1ce8476b3ed129679",
+  "https://www.effectivegatecpm.com/gatuzatq8?key=0c655144c8acd834daca5e7ebc2afe4a",
+  "https://www.effectivegatecpm.com/kwv82bt6hr?key=51991b7539ea47aae1494c656411feb6",
+  "https://www.effectivegatecpm.com/ive9x5sb?key=f1f7d80081801dcfaa4aa929a2df4afd"
+];
 
-/* 🔥 NEW : PLAY AD LOGIC */
-const playAd = document.getElementById("playAd");
-let adShown = false;
+function goAd(){
+  const link=adLinks[Math.floor(Math.random()*adLinks.length)];
+  window.location.href=link;
+}
 
+const strip=document.getElementById("unlockStrip");
+let lastShown=0;
+
+/* SHOW STRIP */
+function showStrip(){
+  strip.style.display="flex";
+  lastShown=Date.now();
+}
+
+/* 5s FIRST */
 videoEl.addEventListener("timeupdate",()=>{
-  if(!adShown && videoEl.currentTime > 5){
-    adShown = true;
-    playAd.style.display = "flex";
+  if(videoEl.currentTime>5 && strip.style.display===""){
+    showStrip();
   }
 });
 
-playAd.addEventListener("click",()=>{
-  window.location.href = "https://37896.lominglaes.com/4/267540";
-});
+/* EVERY 15s */
+setInterval(()=>{
+  if(Date.now()-lastShown>15000){
+    showStrip();
+  }
+},5000);
+
+/* SCROLL */
+window.addEventListener("scroll",showStrip);
+
+/* CLICK */
+strip.onclick=goAd;
 </script>
 
 </body>
