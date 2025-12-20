@@ -20,51 +20,69 @@ header{
   border-bottom:1px solid #222
 }
 .top-brand{display:flex;align-items:center;gap:10px}
-.top-brand img{
-  height:36px;border-radius:6px;
-  box-shadow:0 0 8px rgba(0,180,255,.6)
-}
+.top-brand img{height:36px;border-radius:6px;box-shadow:0 0 8px rgba(0,180,255,.6)}
 .top-brand h1{margin:0;font-size:20px}
+
+/* COUNTRY */
+.country-wrap{position:relative}
+.country-btn{
+  background:#111;border:1px solid #333;color:#fff;
+  padding:7px 12px;border-radius:6px;cursor:pointer;font-size:14px
+}
+.country-list{
+  display:none;position:absolute;top:45px;right:0;
+  background:#111;border:1px solid #333;
+  max-height:260px;overflow:auto;width:200px;
+  z-index:200;border-radius:6px
+}
+.country-list div{padding:10px;border-bottom:1px solid #222;cursor:pointer;font-size:14px}
+.country-list div:hover{background:#222}
 
 /* TOP AD */
 .top-ad{
   background:linear-gradient(90deg,#ff0066,#ffcc00,#ff0066);
-  text-align:center;padding:10px;
-  font-weight:bold;font-size:14px
+  text-align:center;padding:10px;font-weight:bold;font-size:14px
 }
 
 /* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:14px;padding:14px;
-  margin-bottom:90px
+  gap:14px;padding:14px;margin-bottom:140px
 }
-.card{
-  background:#111;border-radius:12px;
-  overflow:hidden;position:relative;
-  cursor:pointer
-}
-.badge{
-  position:absolute;top:8px;left:8px;
-  background:red;font-size:11px;
-  padding:4px 7px;border-radius:5px
-}
+.card{background:#111;border-radius:12px;overflow:hidden;position:relative;cursor:pointer}
+.badge{position:absolute;top:8px;left:8px;background:red;font-size:11px;padding:4px 7px;border-radius:5px}
 .badge.pop{background:orange}
-
-/* IMAGE */
 .thumb{
-  width:100%;height:190px;
-  background-size:cover;
-  background-position:center;
+  width:100%;height:190px;background-size:cover;background-position:center;
   transition:transform .35s
 }
 .card:hover .thumb{transform:scale(1.08)}
+.watch{background:#e50914;color:#fff;text-align:center;padding:12px;font-weight:bold;font-size:14px}
 
-.watch{
-  background:#e50914;color:#fff;
-  text-align:center;padding:12px;
-  font-weight:bold;font-size:14px
+/* PAGINATION */
+.pagination{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;z-index:99
+}
+.pagination button{
+  background:#111;border:1px solid #333;color:#fff;
+  padding:6px 10px;cursor:pointer;border-radius:5px;font-size:13px
+}
+.pagination button.active{background:#e50914;border-color:#e50914}
+
+/* TELEGRAM */
+.telegram{
+  position:fixed;right:18px;bottom:90px;width:58px;height:58px;
+  background:#229ED9;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  animation:pulse 1.4s infinite;z-index:999;cursor:pointer
+}
+.telegram img{width:32px;height:32px}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(34,158,217,.6)}
+  70%{box-shadow:0 0 0 16px rgba(34,158,217,0)}
+  100%{box-shadow:0 0 0 0 rgba(34,158,217,0)}
 }
 </style>
 </head>
@@ -76,61 +94,79 @@ header{
     <img src="https://feelxlinks.b-cdn.net/logo.jpg">
     <h1>Trending Gallery</h1>
   </div>
+
+  <div class="country-wrap">
+    <div class="country-btn" onclick="toggleCountries()">🌍 Countries</div>
+    <div class="country-list" id="countries">
+      <div>🇮🇳 India</div><div>🇺🇸 United States</div>
+      <div>🇬🇧 United Kingdom</div><div>🇨🇦 Canada</div>
+      <div>🇦🇺 Australia</div>
+    </div>
+  </div>
 </header>
 
 <div class="top-ad">🔥 Trending Picks</div>
 
 <div class="grid" id="videoGrid"></div>
+<div class="pagination" id="pagination"></div>
+
+<div class="telegram" onclick="window.open('https://t.me/Hotandspicylinks','_blank')">
+  <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png">
+</div>
 
 <script>
-/* 🔥 VIDEO DATA (nee ichina links) */
-const videos = [
-  {
-    video: "https://feelxlinks.b-cdn.net/v1.mp4",
-    img: "https://feelxlinks.b-cdn.net/v1i.png",
-    badge: "NEW"
-  },
-  {
-    video: "https://feelxlinks.b-cdn.net/v2.mp4",
-    img: "https://feelxlinks.b-cdn.net/v2i.png",
-    badge: "POPULAR"
-  },
-  {
-    video: "https://feelxlinks.b-cdn.net/v3.mp4",
-    img: "https://feelxlinks.b-cdn.net/v3i.png",
-    badge: "HOT"
-  },
-  {
-    video: "https://feelxlinks.b-cdn.net/v4.mp4",
-    img: "https://feelxlinks.b-cdn.net/v4i.png",
-    badge: "TRENDING"
-  },
-  {
-    video: "https://feelxlinks.b-cdn.net/v5.mp4",
-    img: "https://feelxlinks.b-cdn.net/v5i.png",
-    badge: "NEW"
-  }
+/* COUNTRY */
+function toggleCountries(){
+  const c=document.getElementById('countries');
+  c.style.display=c.style.display==='block'?'none':'block';
+}
+document.addEventListener('click',e=>{
+  const wrap=document.querySelector('.country-wrap');
+  if(!wrap.contains(e.target)) document.getElementById('countries').style.display='none';
+});
+
+/* BASE VIDEOS */
+const baseVideos=[
+ {video:"https://feelxlinks.b-cdn.net/v1.mp4",img:"https://feelxlinks.b-cdn.net/v1i.png",badge:"NEW"},
+ {video:"https://feelxlinks.b-cdn.net/v2.mp4",img:"https://feelxlinks.b-cdn.net/v2i.png",badge:"POPULAR"},
+ {video:"https://feelxlinks.b-cdn.net/v3.mp4",img:"https://feelxlinks.b-cdn.net/v3i.png",badge:"HOT"},
+ {video:"https://feelxlinks.b-cdn.net/v4.mp4",img:"https://feelxlinks.b-cdn.net/v4i.png",badge:"TRENDING"},
+ {video:"https://feelxlinks.b-cdn.net/v5.mp4",img:"https://feelxlinks.b-cdn.net/v5i.png",badge:"NEW"}
 ];
 
-/* 🔹 Render cards */
-const grid = document.getElementById("videoGrid");
+/* BUILD 200 (demo) */
+let videos=[]; for(let i=0;i<40;i++) videos.push(...baseVideos);
 
-videos.forEach(v => {
-  const card = document.createElement("div");
-  card.className = "card";
-  card.onclick = () => {
-    localStorage.setItem("currentVideo", v.video);
-    window.location.href = "watch.html";
-  };
+/* PAGINATION */
+const PER_PAGE=20, TOTAL_PAGES=10;
+let currentPage=Number(localStorage.getItem("page"))||1;
+const grid=document.getElementById("videoGrid");
+const pager=document.getElementById("pagination");
 
-  card.innerHTML = `
-    <div class="badge ${v.badge === 'POPULAR' ? 'pop' : ''}">${v.badge}</div>
-    <div class="thumb" style="background-image:url('${v.img}')"></div>
-    <div class="watch">WATCH</div>
-  `;
-  grid.appendChild(card);
-});
+function renderPage(p){
+  grid.innerHTML="";
+  const s=(p-1)*PER_PAGE, e=s+PER_PAGE;
+  videos.slice(s,e).forEach(v=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.onclick=()=>{localStorage.setItem("currentVideo",v.video);location.href="watch.html";};
+    card.innerHTML=`
+      <div class="badge ${v.badge==='POPULAR'?'pop':''}">${v.badge}</div>
+      <div class="thumb" style="background-image:url('${v.img}')"></div>
+      <div class="watch">WATCH</div>`;
+    grid.appendChild(card);
+  });
+}
+function renderPager(){
+  pager.innerHTML="";
+  for(let i=1;i<=TOTAL_PAGES;i++){
+    const b=document.createElement("button");
+    b.textContent=i; if(i===currentPage) b.classList.add("active");
+    b.onclick=()=>{currentPage=i;localStorage.setItem("page",i);renderPage(i);renderPager();};
+    pager.appendChild(b);
+  }
+}
+renderPage(currentPage); renderPager();
 </script>
-
 </body>
 </html>
