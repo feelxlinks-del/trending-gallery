@@ -5,15 +5,20 @@
 <title>Watch</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{margin:0;background:black}
-video{width:100vw;height:100vh}
+body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh}
+video{width:100%;max-width:720px}
 </style>
 </head>
 <body>
 
-<video controls autoplay playsinline>
-  <source src="https://feelxlinks.b-cdn.net/v1.mp4" type="video/mp4">
+<video controls autoplay muted>
+  <source id="videoSrc" src="">
 </video>
+
+<script>
+const video = localStorage.getItem("currentVideo");
+document.getElementById("videoSrc").src = video;
+</script>
 
 </body>
 </html>
