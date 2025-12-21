@@ -1,10 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🔥 Trending Gallery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{margin:0;background:#000;color:#fff}
 
 /* HEADER */
 header{
-  position:sticky;top:0;z-index:100;
-  background:#000;padding:12px 15px;
-  display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid #222
 position:sticky;top:0;z-index:100;
 background:#000;padding:12px 15px;
 display:flex;align-items:center;justify-content:space-between;
@@ -12,20 +18,15 @@ border-bottom:1px solid #222
 }
 .top-brand{display:flex;align-items:center;gap:10px}
 .top-brand img{height:36px;border-radius:6px;box-shadow:0 0 8px rgba(0,180,255,.6)}
-@@ -23,38 +23,38 @@
+.top-brand h1{margin:0;font-size:20px}
+
 /* COUNTRY */
 .country-wrap{position:relative}
 .country-btn{
-  background:#111;border:1px solid #333;color:#fff;
-  padding:7px 12px;border-radius:6px;cursor:pointer;font-size:14px
 background:#111;border:1px solid #333;color:#fff;
 padding:7px 12px;border-radius:6px;cursor:pointer;font-size:14px
 }
 .country-list{
-  display:none;position:absolute;top:45px;right:0;
-  background:#111;border:1px solid #333;
-  max-height:260px;overflow:auto;width:200px;
-  z-index:200;border-radius:6px
 display:none;position:absolute;top:45px;right:0;
 background:#111;border:1px solid #333;
 max-height:260px;overflow:auto;width:200px;
@@ -36,17 +37,12 @@ z-index:200;border-radius:6px
 
 /* TOP AD */
 .top-ad{
-  background:linear-gradient(90deg,#ff0066,#ffcc00,#ff0066);
-  text-align:center;padding:10px;font-weight:bold;font-size:14px
 background:linear-gradient(90deg,#ff0066,#ffcc00,#ff0066);
 text-align:center;padding:10px;font-weight:bold;font-size:14px
 }
 
 /* GRID */
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:14px;padding:14px;margin-bottom:140px
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
 gap:14px;padding:14px;margin-bottom:140px
@@ -55,10 +51,6 @@ gap:14px;padding:14px;margin-bottom:140px
 
 /* BADGE */
 .badge{
-  position:absolute;top:8px;left:8px;
-  background:red;font-size:11px;
-  padding:4px 7px;border-radius:5px;
-  font-weight:bold;z-index:5
 position:absolute;top:8px;left:8px;
 background:red;font-size:11px;
 padding:4px 7px;border-radius:5px;
@@ -66,12 +58,18 @@ font-weight:bold;z-index:5
 }
 .badge.new{animation:blinkGreen 1.2s infinite}
 .badge.hot{animation:blinkRed 1.2s infinite}
-@@ -70,76 +70,77 @@
+.badge.popular{animation:blinkOrange 1.2s infinite}
+.badge.trending{animation:blinkPurple 1.2s infinite}
+
+@keyframes blinkGreen{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
+@keyframes blinkRed{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
+@keyframes blinkOrange{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
+@keyframes blinkPurple{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
+
+/* VIDEO PREVIEW */
 .thumb-wrap{position:relative;cursor:pointer;background:#000}
 .thumb-img{width:100%;height:190px;object-fit:cover;display:block}
 .preview-video{
-  display:none;width:100%;height:190px;
-  object-fit:cover;background:#000
 display:none;width:100%;height:190px;
 object-fit:cover;background:#000
 }
@@ -80,13 +78,6 @@ object-fit:cover;background:#000
 
 /* PLAY ICON */
 .play-icon{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:0;height:0;
-  border-top:16px solid transparent;
-  border-bottom:16px solid transparent;
-  border-left:26px solid rgba(255,255,255,.9);
-  pointer-events:none
 position:absolute;top:50%;left:50%;
 transform:translate(-50%,-50%);
 width:0;height:0;
@@ -98,10 +89,6 @@ pointer-events:none
 
 /* WATCH */
 .watch{
-  background:#e50914;color:#fff;
-  text-align:center;padding:12px;
-  font-weight:bold;font-size:14px;
-  cursor:pointer
 background:#e50914;color:#fff;
 text-align:center;padding:12px;
 font-weight:bold;font-size:14px;
@@ -110,14 +97,10 @@ cursor:pointer
 
 /* PAGINATION */
 .pagination{
-  display:flex;justify-content:center;gap:6px;
-  margin:20px 0 120px
 display:flex;justify-content:center;gap:6px;
 margin:20px 0 120px
 }
 .pagination button{
-  background:#111;border:1px solid #333;color:#fff;
-  padding:6px 10px;cursor:pointer;border-radius:5px
 background:#111;border:1px solid #333;color:#fff;
 padding:6px 10px;cursor:pointer;border-radius:5px
 }
@@ -125,10 +108,6 @@ padding:6px 10px;cursor:pointer;border-radius:5px
 
 /* TELEGRAM */
 .telegram{
-  position:fixed;right:18px;bottom:90px;width:58px;height:58px;
-  background:#229ED9;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  animation:pulse 1.4s infinite;z-index:999;cursor:pointer
 position:fixed;right:18px;bottom:90px;width:58px;height:58px;
 background:#229ED9;border-radius:50%;
 display:flex;align-items:center;justify-content:center;
@@ -136,9 +115,6 @@ animation:pulse 1.4s infinite;z-index:999;cursor:pointer
 }
 .telegram img{width:32px;height:32px}
 @keyframes pulse{
-  0%{box-shadow:0 0 0 0 rgba(34,158,217,.6)}
-  70%{box-shadow:0 0 0 16px rgba(34,158,217,0)}
-  100%{box-shadow:0 0 0 0 rgba(34,158,217,0)}
 0%{box-shadow:0 0 0 0 rgba(34,158,217,.6)}
 70%{box-shadow:0 0 0 16px rgba(34,158,217,0)}
 100%{box-shadow:0 0 0 0 rgba(34,158,217,0)}
@@ -149,25 +125,11 @@ animation:pulse 1.4s infinite;z-index:999;cursor:pointer
 <body>
 
 <header>
-  <div class="top-brand">
-    <img src="https://feelxlinks.b-cdn.net/logo.jpg">
-    <h1>Trending Gallery</h1>
-  </div>
 <div class="top-brand">
 <img src="https://feelxlinks.b-cdn.net/logo.jpg">
 <h1>Trending Gallery</h1>
 </div>
 
-  <div class="country-wrap">
-    <div class="country-btn" onclick="toggleCountries()">🌍 Countries</div>
-      <div class="country-list" id="countries">
-      <div>🇮🇳 India</div>
-      <div>🇺🇸 United States</div>
-      <div>🇬🇧 United Kingdom</div>
-      <div>🇨🇦 Canada</div>
-      <div>🇦🇺 Australia</div>
-    </div>
-  </div>
 <div class="country-wrap">
 <div class="country-btn" onclick="toggleCountries()">🌍 Countries</div>
     <div onclick="setCountry('IN')">🇮🇳 India</div>
@@ -182,60 +144,22 @@ animation:pulse 1.4s infinite;z-index:999;cursor:pointer
 </header>
 
 <div class="top-ad">🔥 Trending Picks</div>
-@@ -148,60 +149,56 @@ <h1>Trending Gallery</h1>
+
+<div class="grid" id="videoGrid"></div>
 <div class="pagination" id="pagination"></div>
 
 <div class="telegram" onclick="window.open('https://t.me/Hotandspicylinks','_blank')">
-  <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png">
 <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png">
 </div>
 
 <script>
 function toggleCountries(){
-  const c=document.getElementById('countries');
-  c.style.display=c.style.display==='block'?'none':'block';
 const c=document.getElementById('countries');
 c.style.display=c.style.display==='block'?'none':'block';
 }
 
 /* ========= BASE VIDEOS (ONLY id + uploadedAt ADDED) ========= */
 const baseVideos=[
- {id:1,video:"https://feelxlinks.b-cdn.net/v1.mp4",img:"https://feelxlinks.b-cdn.net/v1i.png",badge:"NEW",uploadedAt:1},
- {id:2,video:"https://feelxlinks.b-cdn.net/v2.mp4",img:"https://feelxlinks.b-cdn.net/v2i.png",badge:"POPULAR",uploadedAt:2},
- {id:3,video:"https://feelxlinks.b-cdn.net/v3.mp4",img:"https://feelxlinks.b-cdn.net/v3i.png",badge:"HOT",uploadedAt:3},
- {id:4,video:"https://feelxlinks.b-cdn.net/v4.mp4",img:"https://feelxlinks.b-cdn.net/v4i.png",badge:"TRENDING",uploadedAt:4},
- {id:5,video:"https://feelxlinks.b-cdn.net/v5.mp4",img:"https://feelxlinks.b-cdn.net/v5i.png",badge:"NEW",uploadedAt:5},
- {id:6,video:"https://feelxlinks.b-cdn.net/v6.mp4",img:"https://feelxlinks.b-cdn.net/v6i.png",badge:"NEW",uploadedAt:6},
- {id:7,video:"https://feelxlinks.b-cdn.net/v7.mp4",img:"https://feelxlinks.b-cdn.net/v7i.png",badge:"HOT",uploadedAt:7},
- {id:8,video:"https://feelxlinks.b-cdn.net/v8.mp4",img:"https://feelxlinks.b-cdn.net/v8i.png",badge:"TRENDING",uploadedAt:8},
- {id:9,video:"https://feelxlinks.b-cdn.net/v9.mp4",img:"https://feelxlinks.b-cdn.net/v9i.png",badge:"POPULAR",uploadedAt:9},
- {id:10,video:"https://feelxlinks.b-cdn.net/v10.mp4",img:"https://feelxlinks.b-cdn.net/v10i.png",badge:"HOT",uploadedAt:10},
- {id:11,video:"https://feelxlinks.b-cdn.net/v11.mp4",img:"https://feelxlinks.b-cdn.net/v11i.png",badge:"TRENDING",uploadedAt:11},
- {id:12,video:"https://feelxlinks.b-cdn.net/v12.mp4",img:"https://feelxlinks.b-cdn.net/v12i.png",badge:"NEW",uploadedAt:12},
- {id:13,video:"https://feelxlinks.b-cdn.net/v13.mp4",img:"https://feelxlinks.b-cdn.net/v13i.png",badge:"TRENDING",uploadedAt:13},
- {id:14,video:"https://feelxlinks.b-cdn.net/v14.mp4",img:"https://feelxlinks.b-cdn.net/v14i.png",badge:"POPULAR",uploadedAt:14},
- {id:15,video:"https://feelxlinks.b-cdn.net/v15.mp4",img:"https://feelxlinks.b-cdn.net/v15i.png",badge:"HOT",uploadedAt:15},
- {id:16,video:"https://feelxlinks.b-cdn.net/v16.mp4",img:"https://feelxlinks.b-cdn.net/v16i.png",badge:"TRENDING",uploadedAt:16},
- {id:17,video:"https://feelxlinks.b-cdn.net/v17.mp4",img:"https://feelxlinks.b-cdn.net/v17i.png",badge:"NEW",uploadedAt:17},
- {id:18,video:"https://feelxlinks.b-cdn.net/v18.mp4",img:"https://feelxlinks.b-cdn.net/v18i.png",badge:"TRENDING",uploadedAt:18},
- {id:19,video:"https://feelxlinks.b-cdn.net/v19.mp4",img:"https://feelxlinks.b-cdn.net/v19i.png",badge:"POPULAR",uploadedAt:19},
- {id:20,video:"https://feelxlinks.b-cdn.net/v20.mp4",img:"https://feelxlinks.b-cdn.net/v20i.png",badge:"HOT",uploadedAt:20},
- {id:21,video:"https://feelxlinks.b-cdn.net/v21.mp4",img:"https://feelxlinks.b-cdn.net/v21i.png",badge:"TRENDING",uploadedAt:21},
- {id:22,video:"https://feelxlinks.b-cdn.net/v22.mp4",img:"https://feelxlinks.b-cdn.net/v22i.png",badge:"NEW",uploadedAt:22},
- {id:23,video:"https://feelxlinks.b-cdn.net/v23.mp4",img:"https://feelxlinks.b-cdn.net/v23i.png",badge:"HOT",uploadedAt:23},
- {id:24,video:"https://feelxlinks.b-cdn.net/v24.mp4",img:"https://feelxlinks.b-cdn.net/v24i.png",badge:"TRENDING",uploadedAt:24},
- {id:25,video:"https://feelxlinks.b-cdn.net/v25.mp4",img:"https://feelxlinks.b-cdn.net/v25i.png",badge:"POPULAR",uploadedAt:25},
- {id:26,video:"https://feelxlinks.b-cdn.net/v26.mp4",img:"https://feelxlinks.b-cdn.net/v26i.png",badge:"TRENDING",uploadedAt:26},
- {id:27,video:"https://feelxlinks.b-cdn.net/v27.mp4",img:"https://feelxlinks.b-cdn.net/v27i.png",badge:"NEW",uploadedAt:27},
- {id:28,video:"https://feelxlinks.b-cdn.net/v28.mp4",img:"https://feelxlinks.b-cdn.net/v28i.png",badge:"TRENDING",uploadedAt:28},
- {id:29,video:"https://feelxlinks.b-cdn.net/v29.mp4",img:"https://feelxlinks.b-cdn.net/v29i.png",badge:"POPULAR",uploadedAt:29},
- {id:30,video:"https://feelxlinks.b-cdn.net/v30.mp4",img:"https://feelxlinks.b-cdn.net/v30i.png",badge:"HOT",uploadedAt:30},
- {id:31,video:"https://feelxlinks.b-cdn.net/v31.mp4",img:"https://feelxlinks.b-cdn.net/v31i.png",badge:"TRENDING",uploadedAt:31},
- {id:23,video:"https://feelxlinks.b-cdn.net/v32.mp4",img:"https://feelxlinks.b-cdn.net/v32i.png",badge:"HOT",uploadedAt:32},
- {id:24,video:"https://feelxlinks.b-cdn.net/v33.mp4",img:"https://feelxlinks.b-cdn.net/v33i.png",badge:"TRENDING",uploadedAt:33},
- {id:25,video:"https://feelxlinks.b-cdn.net/v34.mp4",img:"https://feelxlinks.b-cdn.net/v34i.png",badge:"POPULAR",uploadedAt:34},
- {id:26,video:"https://feelxlinks.b-cdn.net/v35.mp4",img:"https://feelxlinks.b-cdn.net/v35i.png",badge:"TRENDING",uploadedAt:35},
- {id:27,video:"https://feelxlinks.b-cdn.net/v36.mp4",img:"https://feelxlinks.b-cdn.net/v36i.png",badge:"NEW",uploadedAt::Date.now()}
 {id:1,video:"https://feelxlinks.b-cdn.net/v1.mp4",img:"https://feelxlinks.b-cdn.net/v1i.png",badge:"NEW",uploadedAt:1},
 {id:2,video:"https://feelxlinks.b-cdn.net/v2.mp4",img:"https://feelxlinks.b-cdn.net/v2i.png",badge:"POPULAR",uploadedAt:2},
 {id:3,video:"https://feelxlinks.b-cdn.net/v3.mp4",img:"https://feelxlinks.b-cdn.net/v3i.png",badge:"HOT",uploadedAt:3},
@@ -271,35 +195,25 @@ const baseVideos=[
 
 /* ========= SHUFFLE + ORDER ========= */
 function shuffle(arr){
-  return [...arr].sort(()=>Math.random()-0.5);
 return [...arr].sort(()=>Math.random()-0.5);
 }
 function getLatestFirst(v){
-  return [...v].sort((a,b)=>b.uploadedAt-a.uploadedAt);
 return [...v].sort((a,b)=>b.uploadedAt-a.uploadedAt);
 }
 
 /* ========= BUILD VIDEOS (MIN CHANGE) ========= */
-@@ -217,49 +214,49 @@ <h1>Trending Gallery</h1>
+let videos=[];
+const ordered=getLatestFirst(baseVideos);
+const mixed=[...ordered.slice(0,5),...shuffle(ordered.slice(5))];
+for(let i=0;i<40;i++) videos.push(...mixed);
+
+/* ========= PAGINATION ========= */
+const PER_PAGE=20,TOTAL_PAGES=10;
+let currentPage=Number(localStorage.getItem("page"))||1;
+const grid=document.getElementById("videoGrid");
 const pager=document.getElementById("pagination");
 
 function renderPage(p){
-  grid.innerHTML="";
-  const s=(p-1)*PER_PAGE,e=s+PER_PAGE;
-  videos.slice(s,e).forEach(v=>{
-    const card=document.createElement("div");
-    card.className="card";
-    card.innerHTML=`
-      <div class="badge ${v.badge.toLowerCase()}">${v.badge}</div>
-      <div class="thumb-wrap" onclick="location.href='redirect.html'">
-        <img src="${v.img}" class="thumb-img">
-        <video class="preview-video" src="${v.video}" muted loop playsinline></video>
-        <div class="play-icon"></div>
-      </div>
-      <div class="watch" onclick="playVideo('${v.video}')">WATCH</div>
-    `;
-    grid.appendChild(card);
-  });
 grid.innerHTML="";
 const s=(p-1)*PER_PAGE,e=s+PER_PAGE;
 videos.slice(s,e).forEach(v=>{
@@ -317,11 +231,6 @@ card.innerHTML=`
 grid.appendChild(card);
 });
 
-  document.querySelectorAll(".thumb-wrap").forEach(w=>{
-    const v=w.querySelector("video");
-    w.onmouseenter=()=>v.play();
-    w.onmouseleave=()=>{v.pause();v.currentTime=0};
-  });
 document.querySelectorAll(".thumb-wrap").forEach(w=>{
 const v=w.querySelector("video");
 w.onmouseenter=()=>v.play();
@@ -330,26 +239,11 @@ w.onmouseleave=()=>{v.pause();v.currentTime=0};
 }
 
 function playVideo(video){
-  localStorage.setItem("currentVideo",video);
-  location.href="watch.html";
 localStorage.setItem("currentVideo",video);
 location.href="watch.html";
 }
 
 function renderPager(){
-  pager.innerHTML="";
-  for(let i=1;i<=TOTAL_PAGES;i++){
-    const b=document.createElement("button");
-    b.textContent=i;
-    if(i===currentPage)b.classList.add("active");
-    b.onclick=()=>{
-      currentPage=i;
-      localStorage.setItem("page",i);
-      renderPage(i);
-      renderPager();
-    };
-    pager.appendChild(b);
-  }
 pager.innerHTML="";
 for(let i=1;i<=TOTAL_PAGES;i++){
 const b=document.createElement("button");
@@ -366,3 +260,8 @@ pager.appendChild(b);
 }
 
 renderPage(currentPage);
+renderPager();
+</script>
+
+</body>
+</html>
