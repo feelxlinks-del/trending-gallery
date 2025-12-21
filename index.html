@@ -132,14 +132,14 @@ animation:pulse 1.4s infinite;z-index:999;cursor:pointer
 
 <div class="country-wrap">
 <div class="country-btn" onclick="toggleCountries()">🌍 Countries</div>
-    <div onclick="setCountry('IN')">🇮🇳 India</div>
+    
 <div class="country-list" id="countries">
-<div>🇮🇳 India</div>
-<div>🇺🇸 United States</div>
-<div>🇬🇧 United Kingdom</div>
-<div>🇨🇦 Canada</div>
-<div>🇦🇺 Australia</div>
-</div>
+    <div>🇮🇳 India</div>
+    <div>🇺🇸 United States</div>
+    <div>🇬🇧 United Kingdom</div>
+    <div>🇨🇦 Canada</div>
+    <div>🇦🇺 Australia</div>
+ </div>
 </div>
 </header>
 
@@ -192,6 +192,16 @@ const baseVideos=[
 {id:30,video:"https://feelxlinks.b-cdn.net/v30.mp4",img:"https://feelxlinks.b-cdn.net/v30i.png",badge:"HOT",uploadedAt:30},
 {id:31,video:"https://feelxlinks.b-cdn.net/v31.mp4",img:"https://feelxlinks.b-cdn.net/v31i.png",badge:"TRENDING",uploadedAt:Date.now()}
 ];
+
+function setCountry(code){
+  localStorage.setItem("selectedCountry", code);
+  document.querySelector(".country-btn").innerText =
+    "🌍 " + (code === "IN" ? "India" :
+            code === "US" ? "United States" :
+            code === "UK" ? "United Kingdom" :
+            code === "CA" ? "Canada" : "Australia");
+  document.getElementById("countries").style.display="none";
+}
 
 /* ========= SHUFFLE + ORDER ========= */
 function shuffle(arr){
